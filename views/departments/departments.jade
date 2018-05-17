@@ -1,0 +1,253 @@
+extends ../layout/layout
+
+block content
+	script( src="js/controllers/departments.js" )
+	div( ng-controller="departmentsCtrl" class="grey lighten-4" )
+		//Dropdown Department
+		ul( id="choseDepts" class="dropdown-content active white" )
+			li( ng-repeat="dept in deptIndex" )
+				a( href="" class="black-text" ng-click="fetchDeptDetails(dept.nameInDb)" ) {{ dept.name }}
+		div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+			div( id="preloader" )
+				div( id="loader" )
+		div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+			nav( class="z-depth-0 transparent center-align" )
+				div( style="height : inherit;"	 )
+					img( src="images/smclogo.png" class="left hide-on-med-and-down" style="height:inherit;" )
+					a( href="/" class="flow-text left hide-on-med-and-down" ) &nbsp;&nbsp; St. Mary's College
+					ul( class="right hide-on-med-and-down" )
+						li( class="active" )
+							a( class="dropdown-trigger" href="" data-target="choseDepts" ) Departments
+								i( class="material-icons right" ) arrow_drop_down
+						li
+							a( href="/facilities" ) Facilities
+						li
+							a( href="/associations" ) Service Wings and Associations
+						li
+							a( href="/news" ) News and Events
+						li
+							a( href="/alumni" ) Alumni Association
+					a( href="/" class="flow-text hide-on-large-only" ) St.Mary's College
+					ul( id="slide-out" class="sidenav left-align hide-on-large-only" )
+						li( class="center-align" )
+							div( class="user-view" )
+								div( class="background" )
+									img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+								a( href="#!user" )
+									img( src="/images/smclogo.png" class="circle" )
+								a( href="#!name" )
+									span &nbsp;
+						div
+							li( class="active" )
+								a( href="/departments" )
+									i( class="material-icons" ) school
+									span Departments
+									a( href="" class="white" ng-repeat="dept in deptIndex"  ng-click="fetchDeptDetails(dept.nameInDb)" ) {{ dept.name }}
+										i( class="material-icons grey-text text-lighten-2" ) chevron_right
+							li
+								a( href="/facilities" )
+									i( class="material-icons" ) library_books
+									span Facilities
+							li
+								a( href="/associations" ) 
+									i( class="material-icons" ) assignment_ind
+									span Associations
+							li
+								a( href="/news" ) 
+									i( class="material-icons" ) book
+									span News and Events
+							li
+								a( href="/alumni" ) 
+									i( class="material-icons" ) person_pin
+									span Alumni Association
+					a( href="#" data-target="slide-out" class="sidenav-trigger" )
+						i( class="material-icons" ) menu 
+		div( class="card-panel row" id="infoDetails" style="margin:0" )
+			div( class="col m5 s12 l4" )
+				div( class="collection z-depth-2 center-align" )
+					div( class="collection-item" )
+						img( src="images/smclogo.png" class="center" style="width:50%;" )
+					div( class="collection-item grey lighten-4" )
+						span( ) St. Mary's Departments
+					div( class="collection-item" )
+						span Any successful career starts with advanced higher education. At our university, you will have a deeper knowledge of the subjects that will be particularly useful when climbing the career ladder. St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.
+			div( class="col m7 s12 l8" id="rightInfo" )
+				div( class="container" )
+					ul( class="collection z-depth-2" )
+						li( class="collection-item grey lighten-4" ) Choose Departments here 
+						a( href="" ng-repeat="dept in deptIndex" class="collection-item grey-text text-darken-3" ng-click="fetchDeptDetails(dept.nameInDb)" ) {{ dept.name }}
+		div( class="card-panel z-depth-0" style="margin:0" )
+			div( class="conatiner" )
+				div( class="row z-depth-0" )
+					div( class="col l4 hide-on-med-and-down" )
+						div( id="scrollspyRef" style="display:none" )
+							div( id="scrollspyContent" )
+								ul( class="section table-of-contents" )
+									li( class="baseScroll" )
+										a( href="#basicHolder" class="flow-text" ) Basic Information
+										br
+										br
+										br
+									li( class="facultyScroll" )
+										a( href="#facultyHolder" class="flow-text" ) Faculty Information
+										br
+										br
+										br
+									li( class="newsScroll" )
+										a( href="#newsHolder" class="flow-text" ) News Information
+					div( class="col l8 m12 s12 card-panel z-depth-0" )
+						div( id="basicHolder" class="section scrollspy baseScroll" )
+							div( ng-repeat="dept in deptDetails track by dept._id" )
+								div( class="collection z-depth-1" )
+									div( class="collection-item grey lighten-3" style="font-weight:bold" ) {{ dept.name }} Department
+									div( class="collection-item") 
+										blockquote( class="blue-bquote" )
+											span {{ dept.description }}
+								div( class="collection z-depth-1" )
+									div( class="collection-item" class="grey lighten-3" style="font-weight:bold" ) Department Highlights
+									div( class="collection-item" ng-if="high!=''" ng-repeat="high in dept.highlights track by $index" ) 
+										span {{ high }}
+									div( class="collection-item" ng-if="dept.highlights[0]==''&&dept.highlights[1]==''&&dept.highlights[2]==''||dept.highlights.length==0" )
+										span Highlights will be updated soon . . 
+						div( id="facultyHolder" class="section scrollspy facultyScroll" )
+							div( class="collection z-depth-1" )
+								div( class="collection-item grey lighten-4" style="font-weight:bold" ) Faculty Details
+								div( class="collection-item" )
+									div( class="card-panel z-depth-0 row" style="margin:0" )
+										div( class="col l4 s12 m4 center-align hoverable collection z-depth-2" style="padding:10px;height:280px" ng-repeat="faculty in facultyList" )
+											a( href="#facultyModal" class="modal-trigger black-text" ng-click="facultyModal(faculty)" )
+												img( class="responsive-img" style="height:140px;" ng-src="/serverImages/?img={{ faculty.image }}" )
+												div( class="collection-item" )
+													div( class="collection-item grey lighten-3" )
+														span(  ) {{ faculty.name }}
+													div( class="collection-item" )
+														span(  ) {{ faculty.designation }}
+						div( id="newsHolder" class="section scrollspy newsScroll row" )
+							div( class="collection z-depth-1" )
+								div( class="collection-item grey lighten-4" style="font-weight:bold" )
+									span News of the department
+								div( class="collection-item" )
+									nav( class="white z-depth-0" )
+										div( class="nav-wrapper" )
+											form
+												div( class="input-field" )
+													input( type="search" id="search" placeholder="Search department news here" ng-model="searchNews" )
+													label( class="label-icon left" for="search" )
+														i( class="material-icons black-text" ) search
+													i( class="material-icons" ) close
+								div( class="collection-item grey lighten-3 center-align" ng-if="n==0" )
+									span No news records found
+							ul( class="collection hoverable z-depth-1" dir-paginate="news in newsList| itemsPerPage:4 | filter : searchNews as n" )
+								a( href="#newsModal" class="black-text modal-trigger" ng-click="displayNews(news)" )
+									li( class="collection-item" )
+										span(  ) {{ news.title }}
+										br
+										span( class="grey-text" ) Updated 
+										span( am-time-ago="news.createdAt" class="grey-text" )
+									li( class="collection-item" ) 
+										span( class="truncate" ) {{ news.description }}
+									li( class="collection-item right-align" )
+										button( class="btn-flat grey lighten-4" ) Read More!
+											i( class="material-icons right" ) arrow_right
+							div( class="collection-item row center-align" id="alumniNoteIndicators" ng-if="note!=0" )
+								dir-pagination-controls( max-size="5" boundary-links="true" direction-links="true" )
+		div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+			div( class="container" )
+				div( class="row" )
+					div( class="col l6 s12" )
+						h5( class="white-text" ) St. Mary's Insights
+						p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+						p
+							a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+								i( class="social fa fa-facebook" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+								i( class="social fa fa-google-plus" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+								i( class="social fa fa-instagram" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+								i( class="social fa fa-map" )
+					div( class="col l2 s12" )
+					div( class="col l4 s12" )
+						h5 Useful Links
+						ul
+							li( class="" )
+								a( href="/departments" class="grey-text text-lighten-3" ) Departments
+							li( class="" )
+								a( href="/associations" class="grey-text text-lighten-3" ) Service wings
+							li( class="" )
+								a( href="/news" class="grey-text text-lighten-3" ) News and events
+							li( class="" )
+								a( href="/facilities" class="grey-text text-lighten-3" ) College Facilities
+							li( class="" )
+								a( href="/alumni" class="grey-text text-lighten-3" ) Alumni association
+							li
+								a( href="/login" class="grey-text" ) Login
+			div( class="footer-copyright blue-grey darken-4" )
+				div( class="container left-align" )
+					span Copyright &copy; St. Mary's Shirva
+		div( class="modal white" id="newsModal" )
+			div( class="z-depth-0" id="newsdescription" )
+				div( class="collection" style="margin:0;border:0" )
+					div( class="collection-item grey lighten-3" ) {{ modalNewsTitle }}
+					div( class="collection-item" ) {{ modalNewsDescription }}
+					div( class="collection-item" ) 
+						a( href="" class="btn grey darken-4" style="margin:5%;" ng-click="showNewsImage()" ) Show Images
+							i( class="material-icons right" ) image
+			div( class="center-align z-depth-0" style="display:none;" id="newsimages" )
+				a( ng-repeat="img in newsPhotos" ng-href="/serverImages/?img={{ img }}" )
+					img( ng-src="/serverImages/?img={{ img }}" class="responsive-img" )
+				div( class="card-panel center-align z-depth-0" style="display:none;" id="noPicAcknowledgement" )
+					span No Images Are found with this news!
+		div( class="modal center-align white" id="facultyModal" )
+			div( class="card-panel row z-depth-0" )
+				div( class="col l4 m6 s12 basicFacultyDetails collection-item" )
+					div( class="collection-item" )
+						img( class="responsive-img" style="height:190px;" ng-src="/serverImages/?img={{ modalFacultyImage }}" )
+					div( class="collection-item" )
+						a( href="" class="btn blue darken-4 hide-on-small-only" ng-click="displayAchievement();" ) Achievements
+				div( class="col l8 m6 s12 basicFacultyDetails collection-item" )
+					div( class="collection z-depth-1" )
+						div( class="collection-item row" ) 
+							div( class="col l6 m6 s6 left-align" )
+								| Name
+							div( class="col l6 m6 s6 center-align" )
+								| {{ modalFacultyName }}
+						div( class="collection-item row" ) 
+							div( class="col l12 m12 s12 center-align" )
+								| {{ modalFacultyDescription }}
+						div( class="collection-item row" ) 
+							div( class="col l6 m6 s6 left-align" )
+								| Date of Join
+							div( class="col l6 m6 s6 center-align" )
+								| {{ modalFacultydoj | date }}
+						div( class="collection-item row" ) 
+							div( class="col l6 m6 s6 left-align" )
+								| Qualification
+							div( class="col l6 m6 s6 center-align" )
+								| {{ modalFacultyqual }}
+						div( class="collection-item row" ) 
+							div( class="col l6 m6 s6 left-align" )
+								| Designation
+							div( class="col l6 m6 s6 center-align" )
+								| {{ modalFacultydesig }}
+					a( href="" class="btn-large blue darken-4 hide-on-med-and-up basicFacultyDetails hoverable" ng-click="displayAchievement();" ) Achievements
+				div( class="left-align" id='achievementPanel' style="display:none;" )
+					ul( class="dropdown-content" id="dropdownAch" )
+						li( ng-repeat="ach in achievementList" )
+							a( href="" ng-click="displayAch(ach)" ) {{ ach.achCat }}
+					ul( class="collection center-align" )
+						li( class='collection-item' )
+							a( class="dropdown-trigger btn-flat grey lighten-3" href="" data-target="dropdownAch" ) Click here to View more!
+						li( class="collection-item" )
+							span( class="flow-text" ) {{ modalAchievement }}
+						li( class="collection-item")
+							span {{ modalAchDescription }}
+						li( class="collection-item" )
+							a( href="" class="btn grey darken-4" ng-click="hideAchievement()" ) Go Back
+								i( class="material-icons left" ) keyboard_backspace 

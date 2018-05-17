@@ -1,0 +1,274 @@
+extends ../layout/layout
+
+block content
+	script( src="js/controllers/alumni.js" )
+	div( ng-controller="alumniCtrl" )
+		div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+			div( id="preloader" )
+				div( id="loader" )
+		div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+			nav( class="z-depth-0 transparent center-align z-depth-5" )
+				div( style="height : inherit;"	 )
+					img( src="images/smclogo.png" class="left hide-on-med-and-down" style="height:inherit;" )
+					a( href="/" class="flow-text left hide-on-med-and-down" ) &nbsp;&nbsp; St. Mary's College
+					ul( class="right hide-on-med-and-down" )
+						li
+							a( href="/departments" ) Departments
+						li
+							a( href="/facilities" ) Facilities
+						li
+							a( href="/associations" ) Service Wings and Associations
+						li
+							a( href="/news" ) News and Events
+						li( class="active" )
+							a( href="/alumni" ) Alumni Association
+					a( href="/" class="flow-text hide-on-large-only" ) St.Mary's College
+					ul( id="slide-out" class="sidenav left-align" )
+						li( class="center-align" )
+							div( class="user-view" )
+								div( class="background" )
+									img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+								a( href="#!user" )
+									img( src="/images/smclogo.png" class="circle" )
+								a( href="#!name" )
+									span &nbsp;
+						div
+							li
+								a( href="/departments" )
+									i( class="material-icons" ) school
+									span Departments
+							li
+								a( href="/facilities" )
+									i( class="material-icons" ) library_books
+									span Facilities
+							li
+								a( href="/associations" ) 
+									i( class="material-icons" ) assignment_ind
+									span Associations
+							li
+								a( href="/news" ) 
+									i( class="material-icons" ) book
+									span News and Events
+							li( class="active" )
+								a( href="/alumni" ) 
+									i( class="material-icons" ) person_pin
+									span Alumni Association
+					a( href="#" data-target="slide-out" class="sidenav-trigger" )
+						i( class="material-icons" ) menu 
+		div( class="card-panel row" style="margin:0" )
+			div( class="col m5 s12 l4" )
+				div( class="collection z-depth-1 center-align" )
+					div( class="collection-item" )
+						img( src="images/smclogo.png" class="center" style="width:50%;" )
+					div( class="collection-item grey lighten-4" )
+						span( ) St. Mary's Alumni Association
+					div( class="collection-item" )
+						span All students who secure admission, study on the campus and pass out are members of the association. The alumni play an important role in the development of an academic institution. If we look around we come across instances of the alumni playing elder brother roles in alma mater development by contributing mountains of human resource and crores-worth infrastructure. The college wishes such a help would rejuvenate it as well.				
+					div( class="collection-item grey lighten-5" )
+						a( href="#alumniRegisterModal" class="btn blue darken-4 modal-trigger hoverable" )
+							span Be an Alumni
+			div( class="col m7 s12 l8 card-panel row z-depth-0" )
+				div( class="col s12 m12 l12" )
+					ul( class="tabs" id="tabs-swipe-demo" )
+						li( class="tab col l6 s6 m6" )
+							a( href="#notifications" ) Notifications
+						li( class="tab col l6 s6 m6" )
+							a( href="#news" class="active" ) Alumni News
+				div( id="notifications" class="card-panel z-depth-0" )
+					div( class="collection" )
+						nav( class="grey lighten-3" )
+							div( class="nav-wrapper" )
+								form
+									div( class="input-field" )
+										input( type="search" id="search" ng-model="searchByNameNote" )
+										label( class="label-icon left" for="search" )
+											i( class="material-icons black-text" ) search
+										i( class="material-icons" ) close
+					ul( class="collapsible" ng-if="n!=0" )
+						li
+							div( class="collapsible-header" )
+								a( href="" class="grey-text" )
+									i( class="material-icons grey-text" ) filter_list
+								span( class="grey-text" ) Apply filters for your search here
+							div( class="collapsible-body" )
+								div( class="collection" )
+									div( class="collection-item" )
+										p( class="grey-text" ) By notification title
+										p
+											label
+												input( name="group1" type="radio" ng-click="filterNotification(1,'a')" )
+												span Ascending
+										p
+											label
+												input( name="group1" type="radio" ng-click="filterNotification(1,'d')" )
+												span Descending
+									div( class="collection-item" )
+										p( class="grey-text" ) By notification content date
+										p
+											label
+												input( name="group1" type="radio" ng-click="filterNotification(2,'a')" )
+												span Ascending
+										p
+											label
+												input( name="group1" type="radio" ng-click="filterNotification(2,'d')" )
+												span Descending
+									div( class="collection-item" )
+										p( class="grey-text" ) By notification added date
+										p
+											label
+												input( checked name="group1" type="radio" ng-click="filterNotification(3,'a')" )
+												span Ascending
+										p
+											label
+												input( name="group1" type="radio" ng-click="filterNotification(3,'d')" )
+												span Descending
+					div( class="collection card-panel center-align" ng-if="n.length == 0" )
+						span(  ) No records match the search
+					div( class="collection z-depth-1 hoverable" dir-paginate="note in alumniNotification|orderBy:noteOrder|itemsPerPage:5|filter:searchByNameNote as n" )
+						input( type="text" ng-model="noteMoreLimit" style="display:none;" )
+						div( class="collection-item" )
+							a( href="" class="blue-grey-text text-lighten-4 left" )
+								i( class="material-icons" ) book
+							span(  ) {{ note.notification }}
+						div( class="collection-item" )
+							span( class="grey-text text-darken-2" ) {{ note.date | date : 'fullDate' }}
+						div( class="collection-item right-align" )
+							span( class="grey-text" ) Notification Added 
+							span( am-time-ago="note.createdAt" class="grey-text" )
+					div( class="collection-item row center-align" id="alumniNoteIndicators" ng-if="note!=0" )
+						dir-pagination-controls( max-size="5" boundary-links="true" direction-links="true" auto-hide="true" )
+				div( id="news" class="card-panel z-depth-0" )
+					div( class="collection" )
+						nav( class="grey lighten-3" )
+							div( class="nav-wrapper" )
+								form
+									div( class="input-field" )
+										input( type="search" id="search" ng-model="searchByNameNews" )
+										label( class="label-icon left" for="search" )
+											i( class="material-icons black-text" ) search
+										i( class="material-icons" ) close
+					ul( class="collapsible" ng-if="q!=0" )
+						li
+							div( class="collapsible-header" )
+								a( href="" class="grey-text" )
+									i( class="material-icons grey-text" ) filter_list
+								span( class="grey-text" ) Apply filters for your search here
+							div( class="collapsible-body" )
+								div( class="collection" )
+									div( class="collection-item" )
+										p( class="grey-text" ) By News title
+										p
+											label
+												input( name="group2" type="radio" ng-click="filterNews(1,'a')" )
+												span Ascending
+										p
+											label
+												input( name="group2" type="radio" ng-click="filterNews(1,'d')" )
+												span Descending
+									div( class="collection-item" )
+										p( class="grey-text" ) By News content date
+										p
+											label
+												input( name="group2" type="radio" ng-click="filterNews(2,'a')" )
+												span Ascending
+										p
+											label
+												input( name="group2" type="radio" ng-click="filterNews(2,'d')" )
+												span Descending
+									div( class="collection-item" )
+										p( class="grey-text" ) By News added date
+										p
+											label
+												input( checked name="group2" type="radio" ng-click="filterNews(3,'a')" )
+												span Ascending
+										p
+											label
+												input( name="group2" type="radio" ng-click="filterNews(3,'d')" )
+												span Descending
+					div( class="collection card-panel center-align" ng-if="q.length == 0" )
+						span(  ) No records match the search
+					div( class="collection grey lighten-5 z-depth-1 hoverable" dir-paginate="news in alumniNewsArray|orderBy:newsOrder|itemsPerPage:5|filter:searchByNameNews as q" )
+						input( type="text" ng-model="newsMoreLimit" style="display:none;" )
+						div( class="collection-item z-depth-0 transparent" )
+							a( href="" class="blue-grey-text left" )
+								i( class="material-icons" ) chevron_right
+							span {{news.title}}
+						div( class="collection-item" )
+							a( href="" class="blue-grey-text left" )
+								i( class="material-icons" ) arrow_right
+							span {{news.description}}
+						div( class="collection-item grey-text" )
+							span {{ news.date | date: "fullDate" }}
+						div( class="collection-item" )
+							a( href="#newsImages" class="btn grey darken-3 modal-trigger" ng-click="shownewsImages(news)" ) show images
+						div( class="collection-item right-align" )
+							span( class="grey-text" ) News Added 
+							span( am-time-ago="news.createdAt" class="grey-text" )
+					div( class="collection-item row center-align" id="alumniNewsIndicators" ng-if="news!=0" )
+						dir-pagination-controls( max-size="5" boundary-links="true" direction-links="true" class="pagination" )
+		div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+			div( class="container" )
+				div( class="row" )
+					div( class="col l6 s12" )
+						h5( class="white-text" ) St. Mary's Insights
+						p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+						p
+							a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+								i( class="social fa fa-facebook" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+								i( class="social fa fa-google-plus" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+								i( class="social fa fa-instagram" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+								i( class="social fa fa-map" )
+					div( class="col l2 s12" )
+					div( class="col l4 s12" )
+						h5 Useful Links
+						ul
+							li( class="" )
+								a( href="/departments" class="grey-text text-lighten-3" ) Departments
+							li( class="" )
+								a( href="/associations" class="grey-text text-lighten-3" ) Service wings
+							li( class="" )
+								a( href="/news" class="grey-text text-lighten-3" ) News and events
+							li( class="" )
+								a( href="/facilities" class="grey-text text-lighten-3" ) College Facilities
+							li( class="" )
+								a( href="/alumni" class="grey-text text-lighten-3" ) Alumni association
+							li
+								a( href="/login" class="grey-text" ) Login
+			div( class="footer-copyright blue-grey darken-4" )
+				div( class="container left-align" )
+					span Copyright &copy; St. Mary's Shirva
+		div( id="alumniRegisterModal" class="modal row white card-panel" style="overflow:scroll" )
+			div( class="card-panel col l12 s12 m12 z-depth-0" )
+				form( class="z-depth-0" ng-model="alumniRegForm" name="alumniRegForm" ng-submit="alumniRegister(alumniRegForm.name,alumniRegForm.address,alumniRegForm.course,alumniRegForm.year,alumniRegForm.occupation,alumniRegForm.email)" )
+						div( class="col l12 s12 m12 input-field" )
+							input( type="text" pattern="[A-Za-z ]*" ng-model="name" name="name" required)
+							label( for="name" ) Enter Your Name
+						div( class="col l12 s12 m12 input-field" )
+							input( type="text" pattern="[A-Za-z -()]*" ng-model="address" name="address" required)
+							label( for="address" ) Enter Your Residential Address
+						div( class="col l6 s12 m6 input-field" )
+							input( type="text" pattern="[A-Za-z]*" ng-model="course" name="course" required )
+							label( for="course" ) Enter Course
+						div( class="col l6 s12 m6 input-field" )
+							input( type="number" ng-model="year" name="year" min="1980" max="2018" required)
+							label( for="year" ) Enter year
+						div( class="col l12 s12 m12 input-field" )
+							input( type="text" ng-model="occupation" pattern="[A-Za-z ]*" name="occupation" required)
+							label( for="occupation" ) Enter Your Occupation
+						div( class="col l12 s12 m12 input-field" )
+							input( type="email" ng-model="email" name="email" required)
+							label( for="email" ) Enter Your E-Mail
+						input( type="submit" class="btn blue darken-4" ng-disabled="alumniRegForm.$invalid" value="Send Request" )
+		div( id="newsImages" class="modal white" )
+			div( class="card-panel z-depth-0" )
+				div( class='container center-align' )
+					img( ng-repeat="img in newsImages" ng-src="/serverImages/?img={{ img }}" class="responsive-img" )

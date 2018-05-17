@@ -1,0 +1,180 @@
+extends ../../layout/layout
+
+block content
+    script( src="/js/controllers/admin.js" )
+    div( ng-controller="adminFacilityCtrl" )
+        div( class="center-align hide-on-large-only" )
+            div( class="container" )
+                div( class="card-panel z-depth-0" )
+                    div( class="card-panel" )
+                        button( class="btn-floating right grey darken-4" )
+                            i( class="material-icons" ) 
+                        div( class="container" )
+                            div( class="card-panel z-depth-0" )
+                                img( class="responsive-img" style="height:100px" src="../images/smclogo.png" )
+                        span( class="flow-text" ) This Layout is Not Supported to be Viewable in Phones and Tablet. Please use Desktop instead!
+        div( class="hide-on-med-and-down" )
+            div( class="fixed-action-btn" id="addFacBtn" )
+                a( href="#addFacility" class="btn-floating btn-large hoverable z-depth-4 blue darken-4 modal-trigger" )
+                    i( class="material-icons" ) add
+            div( class="tap-target" data-target="addFacBtn" )
+                div( class="tap-target-content" )
+                    h5 Title
+                    span A bunch of text
+            div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+                div( id="preloader" )
+                    div( id="loader" )
+            div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+                nav( class="z-depth-0 transparent" )
+                    a( href="/admin" class="flow-text" ) St. Mary's Admin | Facilities
+                    ul( id="slide-out" class="sidenav" )
+                        li
+                            div( class="user-view" )
+                                div( class="background" )
+                                    img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+                                a( href="#!user" )
+                                    img( src="/images/smclogo.png" class="circle" )
+                                a( href="#!name" )
+                                    span( class="black-text name" ) &nbsp;
+                        li
+                            a( href="" ng-click="redirectTo('manageDepts')" )
+                                i( class="material-icons" ) school
+                                span Manage Departments
+                        li( class="active" )
+                            a( href="" ng-click="redirectTo('manageFacilities')" )
+                                i( class="material-icons" ) library_books
+                                span Manage Fecilities
+                        li
+                            a( href="" ng-click="redirectTo('manageAssociations')" )
+                                i( class="material-icons" ) assignment_ind
+                                span Manage Associations
+                        li
+                            a( href="" ng-click="redirectTo('manageNews')" )
+                                i( class="material-icons" ) book
+                                span Update News
+                        li
+                            a( href="" ng-click="redirectTo('manageAlumni')" )
+                                i( class="material-icons" ) person_pin
+                                span Update Alumni
+                        li( class="divider" )
+                        li
+                            a( href="/admin" class="btn grey darken-1" ) Get to the dashboard
+                    a( href="#" data-target="slide-out" class="sidenav-trigger show-on-small show-on-medium-and-up" )
+                        i( class="material-icons" ) menu 
+            div( class="card-panel z-depth-0" )
+                input( type="text" name="valuetoBind" ng-bind="valuetoBind" style="display:none" )
+                div( class="collection z-depth-1 hoverable" )
+                    div( class="collection-item" )
+                        nav( class="white z-depth-0" )
+                            div( class="nav-wrapper white" )
+                                form
+                                    div( class="input-field" )
+                                        input( type="search" id="search" placeholder="Search Facililty Here!" ng-model="searchFacility" )
+                                        label( class="label-icon left" for="search" )
+                                            i( class="material-icons black-text" ) search
+                div( class="card-panel center-align" ng-if="ff==0" )
+                    span No Facility Records Found
+                div( class="card-panel z-depth-0 row" )
+                    div( class="collection col l4 hoverable z-depth-2" style="padding:0;" ng-repeat="facility in facilityDetail | filter : searchFacility as ff" )
+                        div( class="collection-item z-depth-0 grey lighten-4" )
+                            i( class="material-icons left" ) image
+                            span {{ facility.title }}
+                        div( class="collection-item" )
+                            span( class="truncate" ) {{ facility.description }}
+                        div( class="collection-item right-align grey-text" )
+                            span Delete Facility
+                            a( href="" class="btn-floating red darken-2 hoverable" ng-click="deleteGenFacility(facility._id)" style="margin:5px" ) 
+                                i( class="material-icons" ) delete 
+                        div( class="collection-item right-align grey-text" )
+                            span Edit Facility
+                            a( href="#editfacility" class="btn-floating blue darken-2 hoverable modal-trigger" style="margin:5px" ng-click="bindEditFacility(facility)" )
+                                i( class="material-icons" ) edit
+                        div( class="collection-item right-align grey-text" )
+                            span Add Images
+                            a( href="#facilityPhotoDiv" class="btn-floating green darken-2 hoverable modal-trigger" style="margin:5px" ng-click="showPics(facility.photos, facility._id)" )
+                                i( class="material-icons" ) photo
+            div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+                div( class="container" )
+                    div( class="row" )
+                        div( class="col l6 s12" )
+                            h5( class="white-text" ) St. Mary's Insights
+                            p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+                            p
+                                a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+                                    i( class="social fa fa-facebook" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+                                    i( class="social fa fa-google-plus" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+                                    i( class="social fa fa-instagram" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+                                    i( class="social fa fa-map" )
+                        div( class="col l2 s12" )
+                        div( class="col l4 s12" )
+                            blockquote
+                                h5 Useful Links
+                                ul
+                                    li( class="" )
+                                        a( href="" ng-click="redirectTo('manageDepts')" class="grey-text text-lighten-3" ) Manage Departments
+                                    li( class="" )
+                                        a( href="" ng-click="redirectTo('manageAssociations')" class="grey-text text-lighten-3" ) Manage Service wings
+                                    li( class="" )
+                                        a( href="" ng-click="redirectTo('manageNews')" class="grey-text text-lighten-3" ) Manage News and events
+                                    li( class="" )
+                                        a( href="" ng-click="redirectTo('manageFacilities')" class="grey-text text-lighten-3" ) Manage College Facilities
+                                    li( class="" )
+                                        a( href="" ng-click="redirectTo('manageAlumni')" class="grey-text text-lighten-3" ) Manage Alumni association
+                                    li( class="" )
+                                        a( href="/" class="grey-text text-lighten-3" ) Home
+                div( class="footer-copyright blue-grey darken-4" )
+                    div( class="container left-align" )
+                        span Copyright &copy; St. Mary's Shirva
+            div( class="modal" id="addFacility" )
+                div( class="collection center-align" style="border:0;margin:0" )
+                    div( class="collection-item grey lighten-4" )
+                        span Add Facilities!
+                    div( class="collection-item" )    
+                        form( name="addFacility" ng-model="addFacility" ng-submit="addGenFacility(addFacility.title,addFacility.description)" )
+                            div( class="row" )
+                                div( class="input-field col l12" )
+                                    input( type="text" name="title" placeholder="" pattern="[A-Za-z()- ]*" ng-model="title" required )
+                                    label( for="title" ) Facility Title
+                                div( class="input-field col l12" )
+                                    textarea( class="materialize-textarea" placeholder="" pattern="[A-Za-z0-9()-., ]*"  name="description" ng-model="description" required )
+                                    label( for="description" ) Facility Description
+                                div( class="card-panel z-depth-0 center-align" )
+                                    input( type="submit" class="btn" ng-disabled="addFacility.$invalid" )
+            div( class="modal white" id="editfacility" )
+                div( class="collection center-align" style="border:0;margin:0" )
+                    div( class="collection-item grey lighten-4" )
+                        span Edit Facilities!
+                    div( class="collection-item" ) 
+                        form( name="editFacility" ng-model="editFacility" ng-submit="editGenFacility(editFacility.edittitle,editFacility.editdescription,editFacility.editid)" )
+                            div( class="row z-depth-0 collection" style="border:0;margin:0;" )
+                                input( type="text" name="editid" ng-model="editid" style="display:none" )
+                                div( class="input-field col l12" )
+                                    input( type="text" name="edittitle" placeholder="" pattern="[A-Za-z()- ]*" ng-model="edittitle" required )
+                                    label( for="title" ) Facility Title
+                                div( class="input-field col l12" )
+                                    textarea( class="materialize-textarea" placeholder="" pattern="[A-Za-z0-9()-., ]*" name="editdescription" ng-model="editdescription" required )
+                                    label( for="description" ) Facility Description
+                                div( class="card-panel z-depth-0 center-align" )
+                                    input( type="submit" class="btn blue darken-4" ng-disabled="editFacility.$invalid" )
+            div( id="facilityPhotoDiv" class='card-panel z-depth-0 modal modal-fixed-footer' )
+                div( class="modal-content" )                
+                    div( class="row" )
+                        div( class="col l4 m6 s12 center-align" ng-repeat="img in facilityModalPhotos" )
+                            img( class="responsive-img z-depth-1 hoverable" style="height:100px" ng-src="/serverImages/?img={{ img }}" )
+                            a( href="" class="btn red hoverable" ng-click="deletefacilityImage(img,facility._id)" ) Delete
+                            br
+                            br
+                    div( class="card-panel center-align z-depth-0" style="display:none;" id="noPicAcknowledgement" )
+                        span( class="flow-text" ) No Images Are found with this facility!
+                div( class="modal-footer" )
+                    a( class="btn waves-light grey darken-4 hoverable" ngf-select="upload($file)" ng-model="file" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ) Upload an Image to facility
+                        i( class="material-icons right" ) file_upload

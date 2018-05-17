@@ -1,0 +1,504 @@
+extends ../../layout/layout
+
+block content
+    script( src="/js/controllers/admin.js" )
+    div( ng-controller="adminAlumniCtrl" )
+        div( class="center-align hide-on-large-only" )
+            div( class="container" )
+                div( class="card-panel z-depth-0" )
+                    div( class="card-panel" )
+                        button( class="btn-floating right grey darken-4" )
+                            i( class="material-icons" ) 
+                        div( class="container" )
+                            div( class="card-panel z-depth-0" )
+                                img( class="responsive-img" style="height:100px" src="../images/smclogo.png" )
+                        span( class="flow-text" ) This Layout is Not Supported to be Viewable in Phones and Tablet. Please use Desktop instead!
+        div( class="hide-on-med-and-down" )
+            div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+                div( id="preloader" )
+                    div( id="loader" )
+            div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+                nav( class="z-depth-0 transparent" )
+                    a( href="/admin" class="flow-text" ) St. Mary's Admin | Alumni
+                    ul( id="slide-out" class="sidenav" )
+                        li
+                            div( class="user-view" )
+                                div( class="background" )
+                                    img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+                                a( href="#!user" )
+                                    img( src="/images/smclogo.png" class="circle" )
+                                a( href="#!name" )
+                                    span( class="black-text name" ) &nbsp;
+                        li
+                            a( href="" ng-click="redirectTo('manageDepts')" )
+                                i( class="material-icons" ) school
+                                span Manage Departments
+                        li
+                            a( href="" ng-click="redirectTo('manageFacilities')" )
+                                i( class="material-icons" ) library_books
+                                span Manage Fecilities
+                        li
+                            a( href="" ng-click="redirectTo('manageAssociations')" )
+                                i( class="material-icons" ) assignment_ind
+                                span Manage Associations
+                        li
+                            a( href="" ng-click="redirectTo('manageNews')" )
+                                i( class="material-icons" ) book
+                                span Update News
+                        li( class="active" )
+                            a( href="" ng-click="redirectTo('manageAlumni')" )
+                                i( class="material-icons" ) person_pin
+                                span Update Alumni
+                        li( class="divider" )
+                        li
+                            a( href="/admin" class="btn grey darken-1" ) Get to the dashboard
+                    a( href="#" data-target="slide-out" class="sidenav-trigger show-on-small show-on-medium-and-up" )
+                        i( class="material-icons" ) menu 
+            div( class="card-panel z-depth-0 row" )
+                div( class="col l4 card-panel z-depth-0" )
+                    div( class="collection z-depth-1" )
+                        div( class="collection-item grey lighten-4 center-align" )
+                            span Alumni Requests
+                        div( class="" )
+                            nav( class="grey lighten-3" )
+                                div( class="nav-wrapper" )
+                                    form
+                                        div( class="input-field" )
+                                            input( type="search" id="search" placeholder="Search requests here" ng-model="searchRequests" )
+                                            label( class="label-icon left" for="search" )
+                                                i( class="material-icons black-text" ) search
+                                            i( class="material-icons" ) close
+                        div( class="collection-item center-align" ng-if="r == 0" )
+                            span( class="grey-text" ) No requests found
+                        div( class="collection-item hoverable" ng-repeat="request in requestList|orderBy:newsOrder|filter:searchRequests as r" )
+                            div( class="right" )
+                                a( href="#alumniAcknowledgement" class="modal-trigger btn-floating grey darken-4 hoverable" ng-click="bindData(request)" )
+                                    i( class="material-icons" ) send
+                            span {{ request.name }}
+                            br
+                            span( class="grey-text" ) Requested 
+                            span( class="grey-text" am-time-ago="request.createdAt" )
+                    //Alumni List
+                    div( class="collection z-depth-1" )
+                        div( class="collection-item center-align grey lighten-4" )
+                            span Alumni List
+                        div( class="" )
+                            nav( class="grey lighten-3" )
+                                div( class="nav-wrapper" )
+                                    form
+                                        div( class="input-field" )
+                                            input( type="search" id="search" placeholder="Search alumni here" ng-model="searchAlumni" )
+                                            label( class="label-icon left" for="search" )
+                                                i( class="material-icons black-text" ) search
+                                            i( class="material-icons" ) close
+                        div( class="collection-item" )
+                            a( href="#aboutAlumni" ng-click="displayAboutAlumni(alumni)" class="modal-trigger collection-item" ng-repeat="alumni in alumniList | filter : searchAlumni as a" )
+                                span( class="grey-text text-darken-3" ) {{ alumni.name }}
+                        div( class="collection-item center-align" ng-if="a==0" )
+                            span( class="grey-text" ) No records found!
+                    div( class="collection z-depth-1" )
+                        div( class="collection-item grey lighten-4" )
+                            span Add alumni here
+                        div( class="collection-item row center-align" )
+                            div( class="card-panel col l12 s12 m12 z-depth-0" )
+                                form( class="z-depth-0" ng-model="alumniRegForm" name="alumniRegForm" ng-submit="alumniRegister(alumniRegForm.name,alumniRegForm.address,alumniRegForm.occupation,alumniRegForm.email,alumniRegForm.course,alumniRegForm.year)" )
+                                    div( class="col l12 s12 m12 input-field" )
+                                        input( type="text" pattern="[A-Za-z ]*" ng-model="name" name="name" required)
+                                        label( for="name" ) Enter Name
+                                    div( class="col l12 s12 m12 input-field" )
+                                        input( type="text" ng-model="address" pattern="[A-Za-z0-9 ]*" name="address" required)
+                                        label( for="address" ) Enter Residential Address
+                                    div( class="col l12 s12 m12 input-field" )
+                                        input( type="text" ng-model="occupation" pattern="[A-Za-z ]*" name="occupation" required)
+                                        label( for="occupation" ) Enter Occupation
+                                    div( class="col l6 s12 m6 input-field" )
+                                        input( type="text" pattern="[A-Za-z]*" ng-model="course" name="course" required )
+                                        label( for="course" ) Enter Course
+                                    div( class="col l6 s12 m6 input-field" )
+                                        input( type="number" ng-model="year" name="year" min="1980" max="2018" required)
+                                        label( for="year" ) Enter year
+                                    div( class="col l12 s12 m12 input-field" )
+                                        input( type="email" ng-model="email" name="email" required)
+                                        label( for="email" ) Enter E-Mail
+                                    input( type="submit" class="btn red darken-1" ng-disabled="alumniRegForm.$invalid" value="Add Alumni" )
+                div( class="col l8" )
+                    div( class="col s12 m12 l12" )
+                        ul( class="tabs" )
+                            li( class="tab col l6 s6 m6" )
+                                a( href="#notifications" ) Add Notifications
+                            li( class="tab col l6 s6 m6" )
+                                a( href="#news" ) Add Alumni News
+                    div( id="notifications" class="card-panel z-depth-0" )
+                        div( class="collection z-depth-1 row left-align" )
+                            div( class="collection-item" )
+                                form( name="alumniNotificationFrm" ng-model="alumniNotificationFrm" ng-submit="addAlumniNotification(alumniNotificationFrm.notification,alumniNotificationFrm.noteDate)" )
+                                    div( class="input-field col l12 s12 m12" )
+                                        input( type="text" pattern="[A-Za-z0-9().,/ ]*" name="notification" ng-model="notification" required )
+                                        label( for="notification" ) Enter a Notification
+                                    div( class="col l12" )
+                                        label Enter date relevant to the notification ( If Any )
+                                        div( class="input-field inline" )
+                                            input( type="date" class="noteDateId" name="noteDate" ng-model="noteDate" required ng-init="datePick();" )
+                                    input( type="submit" class="btn grey darken-3 hoverable" ng-disabled="alumniNotificationFrm.$invalid" )
+                        div( class="collection-item" )
+                            nav( class="grey lighten-3" )
+                                div( class="nav-wrapper" )
+                                    form
+                                        div( class="input-field" )
+                                            input( type="search" id="search" placeholder="Search added alumni notification here" ng-model="searchAlumniNote" )
+                                            label( class="label-icon left" for="search" )
+                                                i( class="material-icons black-text" ) search
+                                            i( class="material-icons" ) close
+                            ul( class="collapsible" ng-if="n!=0" )
+                                li
+                                    div( class="collapsible-header" )
+                                        a( href="" class="grey-text" )
+                                            i( class="material-icons grey-text" ) filter_list
+                                        span( class="grey-text" ) Apply filters for your search here
+                                    div( class="collapsible-body" )
+                                        div( class="collection" )
+                                            div( class="collection-item" )
+                                                p( class="grey-text" ) By notification title
+                                                p
+                                                    label
+                                                        input( name="group1" type="radio" ng-click="filterNotification(1,'a')" )
+                                                        span Ascending
+                                                p
+                                                    label
+                                                        input( name="group1" type="radio" ng-click="filterNotification(1,'d')" )
+                                                        span Descending
+                                            div( class="collection-item" )
+                                                p( class="grey-text" ) By notification content date
+                                                p
+                                                    label
+                                                        input( name="group1" type="radio" ng-click="filterNotification(2,'a')" )
+                                                        span Ascending
+                                                p
+                                                    label
+                                                        input( name="group1" type="radio" ng-click="filterNotification(2,'d')" )
+                                                        span Descending
+                                            div( class="collection-item" )
+                                                p( class="grey-text" ) By notification added date
+                                                p
+                                                    label
+                                                        input( checked name="group1" type="radio" ng-click="filterNotification(3,'a')" )
+                                                        span Ascending
+                                                p
+                                                    label
+                                                        input( name="group1" type="radio" ng-click="filterNotification(3,'d')" )
+                                                        span Descending
+                        div( class="card-panel" ng-if="no==0" )
+                            span No notifications found !
+                        div( class="collection hoverable z-depth-1" dir-paginate="note in alumniNotification|itemsPerPage:4|orderBy : noteOrder|filter:searchAlumniNote as no" )
+                            div( class="collection-item" )
+                                span {{ note.notification }}
+                            div( class="collection-item grey lighten-4" )
+                                div( class="collection-item transparent" )
+                                    span Dated {{ note.date | date:'fullDate' }}
+                                    br
+                                    span Added 
+                                    span( am-time-ago="note.createdAt" class="grey-text" )
+                                    br
+                                    span Last Edited 
+                                    span( am-time-ago="note.updatedAt" class="grey-text" )
+                            div( class="left-align collection-item z-depth-0 grey lighten-3" )
+                                div( class="collection-item transparent" )
+                                    a( href="" class="btn-floating red darken-3 hoverable" ng-click="deleteAlumniNotification(note)" )
+                                        i( class="material-icons" ) delete
+                                    &nbsp;&nbsp;&nbsp;
+                                    span Delete Notification
+                                    br
+                                    label The notification will be deleted permanently
+                                div( class="collection-item transparent" )
+                                    a( href="#editNotification" class="btn-floating grey darken-3 hoverable modal-trigger" ng-click="bindToEdit(note);" )
+                                        i( class="material-icons" ) edit
+                                    &nbsp;&nbsp;&nbsp;
+                                    span Edit Notification
+                        div( class="collection-item row center-align" id="alumniNoteIndicators" ng-if="note!=0" )
+                            dir-pagination-controls max-size="5" boundary-links="true" direction-links="true"
+                    div( id="news" class="card-panel z-depth-0" )
+                        form( name="alumniNews" ng-model="alumniNews" ng-submit="addAlumniNews(alumniNews.alumniNewsTitle,alumniNews.alumniNewsDesc,alumniNews.newsDate)" )
+                            div( class="collection row z-depth-1" )
+                                div( class="collection-item" )
+                                    div( class="input-field col l12 s12 m12" )
+                                        input( type="text" name="alumniNewsTitle" pattern="[A-Za-z ]*" ng-model="alumniNewsTitle" required )
+                                        label( for="alumniNewsTitle" ) News Title
+                                    div( class="input-field col l12 s12 m12" )
+                                        textarea( class="materialize-textarea" type="text" name="alumniNewsDesc"  pattern="[A-Za-z0-9()'.,/ ]*" ng-model="alumniNewsDesc" required )
+                                        label( for="alumniNewsDesc" ) News Description
+                                    div( class="col l12" )
+                                        label Enter date relevant to the news ( if any ) 
+                                        div( class="input-field inline" )
+                                            input( type="date" class="newsDateId" name="newsDate" ng-model="newsDate" required ng-init="datePick();" )
+                                    input( type="submit" class="btn grey darken-3 hoverable" ng-disabled="alumniNews.$invalid" )
+                            div( class="collection" )
+                                div( class="" )
+                                    nav( class="grey lighten-3" )
+                                        div( class="nav-wrapper" )
+                                            form
+                                                div( class="input-field" )
+                                                    input( type="search" id="search" placeholder="Search added alumni news here" ng-model="searchAlumniNews" )
+                                                    label( class="label-icon left" for="search" )
+                                                        i( class="material-icons black-text" ) search
+                                                    i( class="material-icons" ) close
+                                ul( class="collapsible" ng-if="q!=0" )
+                                    li
+                                        div( class="collapsible-header" )
+                                            a( href="" class="grey-text" )
+                                                i( class="material-icons grey-text" ) filter_list
+                                            span( class="grey-text" ) Apply filters for your search here
+                                        div( class="collapsible-body" )
+                                            div( class="collection" )
+                                                div( class="collection-item" )
+                                                    p( class="grey-text" ) By News title
+                                                    p
+                                                        label
+                                                            input( name="group2" type="radio" ng-click="filterNews(1,'a')" )
+                                                            span Ascending
+                                                    p
+                                                        label
+                                                            input( name="group2" type="radio" ng-click="filterNews(1,'d')" )
+                                                            span Descending
+                                                div( class="collection-item" )
+                                                    p( class="grey-text" ) By News content date
+                                                    p
+                                                        label
+                                                            input( name="group2" type="radio" ng-click="filterNews(2,'a')" )
+                                                            span Ascending
+                                                    p
+                                                        label
+                                                            input( name="group2" type="radio" ng-click="filterNews(2,'d')" )
+                                                            span Descending
+                                                div( class="collection-item" )
+                                                    p( class="grey-text" ) By News added date
+                                                    p
+                                                        label
+                                                            input( checked name="group2" type="radio" ng-click="filterNews(3,'a')" )
+                                                            span Ascending
+                                                    p
+                                                        label
+                                                            input( name="group2" type="radio" ng-click="filterNews(3,'d')" )
+                                                            span Descending
+                            div( class="card-panel" ng-if="ne==0" )
+                                span No records found
+                            div( class="collection hoverable z-depth-1" dir-paginate="news in alumniNewsArray| itemsPerPage:4 |orderBy :newsOrder | filter : searchAlumniNews as ne" )
+                                div( class="collection-item grey lighten-4" )
+                                    span {{ news.title }}
+                                div( class="collection-item" )
+                                    span {{ news.description }}
+                                div( class="collection-item left-align grey lighten-4" )
+                                    span Dated {{ news.date | date : 'fullDate' }}
+                                    br
+                                    span Added 
+                                    span( am-time-ago="news.createdAt" class="grey-text" )
+                                    br
+                                    span Last Edited 
+                                    span( am-time-ago="news.updatedAt" class="grey-text" )
+                                div( class="collection-item grey lighten-3" )
+                                    a( href="" class="btn-floating red darken-3 hoverable" ng-click="deleteAlumniNews(news._id)" )
+                                        i( class="material-icons tiny" ) close
+                                    &nbsp;&nbsp;&nbsp;
+                                    span Delete News
+                                    br
+                                    label The news will be deleted permanently
+                                div( class="collection-item grey lighten-4" )
+                                    a( href="#uploadImageModal" class="btn-floating grey darken-4 modal-trigger" ng-click="bindNewsImages(news)" )
+                                        i( class='material-icons' ) file_upload
+                                    &nbsp;&nbsp;&nbsp;
+                                    span Upload Image
+                                div( class="collection-item grey lighten-3" )
+                                    a( href="#editNews" class="btn-floating grey darken-3 hoverable modal-trigger" ng-click="bindToEditNews(news);" )
+                                        i( class="material-icons" ) edit
+                                    &nbsp;&nbsp;&nbsp;
+                                    span Edit News
+                            div( class="collection-item row center-align" id="alumniNoteIndicators" ng-if="note!=0" )
+                                dir-pagination-controls max-size="5" boundary-links="true" direction-links="true"
+            div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+                div( class="container" )
+                    div( class="row" )
+                        div( class="col l6 s12" )
+                            h5( class="white-text" ) St. Mary's Insights
+                            p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+                            p
+                                a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+                                    i( class="social fa fa-facebook" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+                                    i( class="social fa fa-google-plus" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+                                    i( class="social fa fa-instagram" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+                                    i( class="social fa fa-map" )
+                        div( class="col l2 s12" )
+                        div( class="col l4 s12" )
+                            h5 Useful Links
+                            ul
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageDepts')" class="grey-text text-lighten-3" ) Manage Departments
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageAssociations')" class="grey-text text-lighten-3" ) Manage Service wings
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageNews')" class="grey-text text-lighten-3" ) Manage News and events
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageFacilities')" class="grey-text text-lighten-3" ) Manage College Facilities
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageAlumni')" class="grey-text text-lighten-3" ) Manage Alumni association
+                                li( class="" )
+                                    a( href="/" class="grey-text text-lighten-3" ) Home
+                div( class="footer-copyright blue-grey darken-4" )
+                    div( class="container left-align" )
+                        span Copyright &copy; St. Mary's Shirva
+            div( class="modal" id="editNews" style="border-radius:20px;width:50%;" )
+                div( class='card-panel z-depth-0 center-align' )
+                    form( name="editNewsFrm" ng-model="editNewsFrm" ng-submit="editAlumniNews(editNewsFrm.newsid,editNewsFrm.editNewsTitleF,editNewsFrm.editNewsDescF,editNewsFrm.noteEditDate)" )
+                        div( class="container" )
+                            input( ng-model="newsid" name="newsid" style="display:none" )
+                            div( class="input-field" )
+                                textarea( id="editNewsTitle" placeholder="Edit the News Title" ng-model="editNewsTitleF" name="editNewsTitleF" class="materialize-textarea active" )
+                                label( for="editNewsTitleF" class="active" ) Edit News Title
+                            div( class="input-field" )
+                                textarea( id="editNewsDesc" placeholder="Edit the News Description" ng-model="editNewsDescF" name="editNewsDescF" class="materialize-textarea active" )
+                                label( for="editNewsDescF" class="active" ) Edit News Title
+                            div( class="col l12" )
+                                label Enter date relevant to the notification ( If Any )
+                                div( class="input-field inline" )
+                                    input( type="date" class="newsDateId" name="noteEditDate" ng-model="noteEditDate" required ng-init="datePick();" )
+                        input( type="submit" class="btn grey darken-2" value="Edit News" ) 
+            div( class="modal" id="editNotification" style="border-radius:20px;width:50%;" )
+                div( class='card-panel z-depth-0 center-align' )
+                    form( name="editNotificationFrm" ng-model="editNotificationFrm" ng-submit="editAlumniNotification(editNotificationFrm.id,editNotificationFrm.editNotif,editNotificationFrm.noteEditDate)" )
+                        div( class="container" )
+                            input( ng-model="id" name="id" style="display:none" )
+                            div( class="input-field" )
+                                textarea( id="editNote" placeholder="Edit the Note" ng-model="editNotif" name="editNotif" class="materialize-textarea active" )
+                                label( for="editNote" class="active" ) Edit Notification
+                            div( class="col l12" )
+                                label Enter a relevant date
+                                div( class="input-field inline" )
+                                    input( type="date" class="noteDateId" name="noteEditDate" ng-model="noteEditDate" required ng-init="datePick();" )
+                        input( type="submit" class="btn grey darken-2" value="Edit Notification" )        
+            div( class="modal white" id="alumniAcknowledgement" ) 
+                div( ng-repeat="alumni in alumniArray" class="left-align" )
+                    div( class="collection card-panel z-depth-0" )
+                        div( class="collection-item flow-text" ) {{alumni.name}}
+                        div( class="collection-item" ) Had been in the course {{ alumni.course }} in the year {{ alumni.batchOfYear }}
+                        div( class="collection-item" ) {{ alumni.email }}
+                        div( class="collection-item" ) {{ alumni.occupation }}
+                        div( class="center-align collection-item" )
+                            br
+                            a( href="#alumniAcknowledgement" class="modal-trigger btn green hoverable" ng-click="respondRequest(alumni._id,true)" ) Accept
+                                i( class="material-icons left" ) check
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            a( href="#alumniAcknowledgement" class="modal-trigger btn red darken-2 hoverable" ng-click="respondRequest(alumni._id,false)" ) Reject
+                                i( class="material-icons left" ) close
+            div( id="aboutAlumni" class="modal white" )
+                div( class="card-panel z-depth-0 transparent" ng-repeat="content in selectedAlumni" )
+                    div( id="mainBlock" )
+                        div( class="row" )
+                            div( class="col l4 collection center-align" )
+                                div( class="collection-item" )
+                                    img( class="responsive-img hoverable" ng-src="/serverImages/?img={{ content.photo }}" )
+                                div( class="collection-item" )
+                                    a( href="" class="btn-floating grey darken-4" ngf-select="upload($file, content._id)" ng-model="file" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="300" ngf-resize="{width: 400, height: 400}" )
+                                        i( class="material-icons" ) file_upload
+                                div( class="collection-item" )
+                                    span Accepted 
+                                    br
+                                    span( class="grey-text" am-time-ago="content.createdAt" )
+                                div( class="collection-item" )
+                                    span Last edited
+                                    br
+                                    span( class="grey-text" am-time-ago="content.updatedAt" )
+                            div( class="col l8 collection" )
+                                div( class="collection-item grey lighten-4" )
+                                    span Basic Details
+                                div( class="collection-item" )
+                                    span( class="grey-text" ) Name : 
+                                    span {{ content.name }}
+                                div( class="collection-item" )
+                                    span( class="grey-text" ) Designation : 
+                                    span {{ content.designation }}
+                                div( class="collection-item" )
+                                    span( class="grey-text" ) Batch : 
+                                    span {{ content.batchOfYear }}
+                                div( class="collection-item" )
+                                    span( class="grey-text" ) Course : 
+                                    span {{ content.course }}
+                                div( class="collection-item" )
+                                    span( class="grey-text" ) Occupation : 
+                                    span {{ content.occupation }}
+                                div( class="collection-item" )
+                                    span( class="grey-text" ) Email :  
+                                    span {{ content.email }}
+                                div( class="collection-item" )
+                                    span( class="grey-text" ) Type of alumni :  
+                                    span {{ content.typeOfAlumni }}
+                                div( class="collection-item grey lighten-3" )                                
+                                    a( href="" ng-click="openDeleteAck()" class="btn-floating red darken-2" )
+                                        i( class="material-icons" ) delete
+                                    &nbsp;&nbsp;&nbsp;
+                                    span Delete Alumni
+                                    br
+                                    label The alumni will be deleted permanently
+                                div( class="collection-item grey lighten-3" )
+                                    a( href="" ng-click="openEditPanel()" class="btn-floating grey darken-3" )
+                                        i( class="material-icons" ) edit
+                                    &nbsp;&nbsp;&nbsp;
+                                    span Edit Alumni
+                    div( class="z-depth-0 center-align" id="deleteAcknowledgement" style="display:none;" )
+                        span Are you sure want to Delete the alumni?
+                        br
+                        br
+                        a( class="btn-floating green" ng-click="deleteAlumni()" )
+                            i( class="material-icons" ) check
+                        &nbsp;&nbsp;&nbsp;
+                        a( class="btn-floating red" ng-click="closeDelAck()" )
+                            i( class="material-icons" ) close
+                    div( class="" id="editPanel" style="display:none;" )
+                        a( href="" class="black-text" ng-click="closeEditPanel()" )
+                            i( class="material-icons right" ) close
+                        form( ng-model="alumniEditForm" class="row" name="alumniEditForm" ng-submit="editSelectedAlumni(alumniEditForm.editName,alumniEditForm.editAddress,alumniEditForm.editOccupation,alumniEditForm.editDesignation,alumniEditForm.edcourse,alumniEditForm.edyear)" )
+                            div( class="col l12 s12 m12 input-field" )
+                                input( type="text" ng-model="editName" pattern="[A-Za-z ]*" placeholder="" name="editName" required)
+                                label( for="name" ) Enter the Name
+                            div( class="col l12 s12 m12 input-field" )
+                                input( type="text" ng-model="editAddress" pattern="[A-Za-z0-9 ]*" placeholder="" name="editAddress" required)
+                                label( for="address" ) Enter the Residential Address
+                            div( class="col l12 s12 m12 input-field" )
+                                input( type="text" placeholder="" ng-model="editOccupation" pattern="[A-Za-z ]*" name="editOccupation" required)
+                                label( for="occupation" ) Enter the Occupation
+                            div( class="col l12 s12 m12 input-field" )
+                                div
+                                    label
+                                        input( type="radio" name="typeOfAlumni" id="patreon" )
+                                        span Patreon
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    label
+                                        input( type="radio" name="typeOfAlumni" id="lifemember" )
+                                        span Life Member
+                            div( class="col l6 s12 m6 input-field" )
+                                input( type="text" pattern="[A-Za-z]*" placeholder="" ng-model="edcourse" name="edcourse" required )
+                                label( for="course" ) Enter Course
+                            div( class="col l6 s12 m6 input-field" )
+                                input( type="number" ng-model="edyear" placeholder="" name="edyear" min="1980" max="2018" required)
+                                label( for="year" ) Enter year
+                            div( class="col l12 s12 m12 input-field" )
+                                input( type="text" placeholder="" pattern="[A-Za-z ]*" ng-model="editDesignation" name="editDesignation" required)
+                                label( for="designation" ) Enter Alumni Designation
+                            input( type="submit" class="btn blue darken-4" ng-disabled="alumniEditForm.$invalid" value="Edit Alumni" )
+            div( id="uploadImageModal" class="modal modal-fixed-footer white" )
+                div( class="modal-content" )
+                    input( type="text" ng-model="newsImgId" name="newsImgId" style="display:none" )
+                    div( class="row" )
+                        div( ng-repeat="img in newsImages" class="col l4 center-align" )
+                            img( ng-src="/serverImages/?img={{ img }}" class="responsive-img" )
+                            a( href="" class="btn red" ng-click="deleteAlumniNewsImage(img)" ) Delete Image
+                div( class="modal-footer" )
+                    button( class="btn-flat waves-light grey darken-4 white-text hoverable" ngf-select="uploadAlumniNewsImg($file)" ng-model="file" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-validate="{size:'2MB'}" )
+                        i( class="material-icons left" ) file_upload
+                        span upload an Image

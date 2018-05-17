@@ -1,0 +1,264 @@
+extends ../layout/layout
+
+block content
+	script( src="js/controllers/news.js" )
+	div( ng-controller="newsCtrl" )
+		div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+			div( id="preloader" )
+				div( id="loader" )
+		div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+			nav( class="z-depth-0 transparent center-align" )
+				div( style="height : inherit;"	 )
+					img( src="images/smclogo.png" class="left hide-on-med-and-down" style="height:inherit;" )
+					a( href="/" class="flow-text left hide-on-med-and-down" ) &nbsp;&nbsp; St. Mary's College
+					ul( class="right hide-on-med-and-down" )
+						li
+							a( href="/departments" ) Departments
+						li
+							a( href="/facilities" ) Facilities
+						li
+							a( href="/associations" ) Service Wings and Associations
+						li( class="active" )
+							a( href="/news" ) News and Events
+						li
+							a( href="/alumni" ) Alumni Association
+					a( href="/" class="flow-text hide-on-large-only" ) St.Mary's College
+					ul( id="slide-out" class="sidenav left-align" )
+						li( class="center-align" )
+							div( class="user-view" )
+								div( class="background" )
+									img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+								a( href="#!user" )
+									img( src="/images/smclogo.png" class="circle" )
+								a( href="#!name" )
+									span &nbsp;
+						div
+							li
+								a( href="/departments" )
+									i( class="material-icons" ) school
+									span Departments
+							li
+								a( href="/facilities" )
+									i( class="material-icons" ) library_books
+									span Facilities
+							li
+								a( href="/associations" ) 
+									i( class="material-icons" ) assignment_ind
+									span Associations
+							li( class="active" )
+								a( href="/news" ) 
+									i( class="material-icons" ) book
+									span News and Events
+							li
+								a( href="/alumni" ) 
+									i( class="material-icons" ) person_pin
+									span Alumni Association
+					a( href="#" data-target="slide-out" class="sidenav-trigger" )
+						i( class="material-icons" ) menu 
+		div( class="card-panel z-depth-0" style="margin:0" )
+			div( class="row" )
+				div( class="col s12 m12 l4" )
+					div( class="collection z-depth-2 center-align" )
+						div( class="collection-item" )
+							img( src="images/smclogo.png" class="center" style="width:50%;" )
+						div( class="collection-item grey lighten-4" )
+							span( ) St. Mary's Departments
+						div( class="collection-item" )
+							span Any successful career starts with advanced higher education. At our university, you will have a deeper knowledge of the subjects that will be particularly useful when climbing the career ladder. St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.
+				div( class="col s12 m12 l8" )
+					ul( class="tabs row" )
+						li( class="tab col l6 s6 m6" )
+							a( href="#notif" ) Notification
+						li( class="tab col l6 s6 m6" )
+							a( href="#news" ) News
+					div( id="notif" )
+						div( class="collection z-depth-1" )
+							div( class="collection-item" )
+								nav( class="white z-depth-0" )
+									div( class="nav-wrapper" )
+										form
+											div( class="input-field" )
+												input( type="search" id="search" placeholder="Search Notification here" ng-model="searchNote" )
+												label( class="label-icon left" for="search" )
+													i( class="material-icons black-text" ) search
+												i( class="material-icons" ) close
+							div( class="collection-item" )
+								ul( class="collapsible" ng-if="n!=0" )
+									li
+										div( class="collapsible-header" )
+											a( href="" class="grey-text" )
+												i( class="material-icons grey-text" ) filter_list
+											span( class="grey-text" ) Apply filters for your search here
+										div( class="collapsible-body" )
+											div( class="collection" )
+												div( class="collection-item" )
+													p( class="grey-text" ) By notification title
+													p
+														label
+															input( name="group1" type="radio" ng-click="filterNotification(1,'a')" )
+															span Ascending
+													p
+														label
+															input( name="group1" type="radio" ng-click="filterNotification(1,'d')" )
+															span Descending
+												div( class="collection-item" )
+													p( class="grey-text" ) By notification content date
+													p
+														label
+															input( name="group1" type="radio" ng-click="filterNotification(2,'a')" )
+															span Ascending
+													p
+														label
+															input( name="group1" type="radio" ng-click="filterNotification(2,'d')" )
+															span Descending
+												div( class="collection-item" )
+													p( class="grey-text" ) By notification added date
+													p
+														label
+															input( checked name="group1" type="radio" ng-click="filterNotification(3,'a')" )
+															span Ascending
+													p
+														label
+															input( name="group1" type="radio" ng-click="filterNotification(3,'d')" )
+															span Descending
+							div( class="collection-item center-align" ng-if="sn==0" )
+								span No Notification Found
+						div( class="collection hoverable z-depth-2" dir-paginate="notif in genNotification|orderBy:noteOrder|itemsPerPage:3|filter:searchNote as sn" )
+							div( class="collection-item grey lighten-4" )
+								span {{ notif.notification }}
+							div( class="collection-item" )
+								span( class="grey-text text-lighten-1" ) Dated on {{ notif.date | date :'fullDate' }}
+							div( class="collection-item right-align grey-text text-lighten-1" )
+								span Updated on {{ notif.updatedAt | date }}
+						div( class="collection grey lighten-4 right-align z-depth-1" )
+							dir-pagination-controls( boundary-links="true" direction-links="true" )				
+					div( id="news" )
+						div( class="collection z-depth-1" )
+							div( class="collection-item" )
+								nav( class="white z-depth-0" )
+									div( class="nav-wrapper" )
+										form
+											div( class="input-field" )
+												input( type="search" id="search" placeholder="Search News here" ng-model="searchNews" )
+												label( class="label-icon left" for="search" )
+													i( class="material-icons black-text" ) search
+												i( class="material-icons" ) close
+							div( class="collection-item" )
+								ul( class="collapsible" ng-if="q!=0" )
+									li
+										div( class="collapsible-header" )
+											a( href="" class="grey-text" )
+												i( class="material-icons grey-text" ) filter_list
+											span( class="grey-text" ) Apply filters for your search here
+										div( class="collapsible-body" )
+											div( class="collection" )
+												div( class="collection-item" )
+													p( class="grey-text" ) By News title
+													p
+														label
+															input( name="group2" type="radio" ng-click="filterNews(1,'a')" )
+															span Ascending
+													p
+														label
+															input( name="group2" type="radio" ng-click="filterNews(1,'d')" )
+															span Descending
+												div( class="collection-item" )
+													p( class="grey-text" ) By News content date
+													p
+														label
+															input( name="group2" type="radio" ng-click="filterNews(2,'a')" )
+															span Ascending
+													p
+														label
+															input( name="group2" type="radio" ng-click="filterNews(2,'d')" )
+															span Descending
+												div( class="collection-item" )
+													p( class="grey-text" ) By News added date
+													p
+														label
+															input( checked name="group2" type="radio" ng-click="filterNews(3,'a')" )
+															span Ascending
+													p
+														label
+															input( name="group2" type="radio" ng-click="filterNews(3,'d')" )
+															span Descending
+						div( class="collection z-depth-2" ng-repeat="news in genNews|orderBy:newsOrder|filter:searchNews as snews" )
+							div( class="collection-item grey lighten-4" )
+								span {{ news.title }}
+							div( class="collection-item" )
+								span( class="truncate" ) {{ news.description }}
+							div( class="collection-item" )
+								span( class="grey-text text-lighten-1" ) Dated on {{ news.date | date :'fullDate' }}
+							div( class="collection-item" )
+								a( href="#newsModal" class="btn z-depth-2 hoverable grey darken-4 modal-trigger" ng-click="showNews(news)" ) Read Full Story
+							div( class="collection-item right-align grey-text text-lighten-1" )
+								span Updated on {{ news.updatedAt | date }}
+		div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+			div( class="container" )
+				div( class="row" )
+					div( class="col l6 s12" )
+						h5( class="white-text" ) St. Mary's Insights
+						p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+						p
+							a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+								i( class="social fa fa-facebook" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+								i( class="social fa fa-google-plus" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+								i( class="social fa fa-instagram" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+								i( class="social fa fa-map" )
+					div( class="col l2 s12" )
+					div( class="col l4 s12" )
+						h5 Useful Links
+						ul
+							li( class="" )
+								a( href="/departments" class="grey-text text-lighten-3" ) Departments
+							li( class="" )
+								a( href="/associations" class="grey-text text-lighten-3" ) Service wings
+							li( class="" )
+								a( href="/news" class="grey-text text-lighten-3" ) News and events
+							li( class="" )
+								a( href="/facilities" class="grey-text text-lighten-3" ) College Facilities
+							li( class="" )
+								a( href="/alumni" class="grey-text text-lighten-3" ) Alumni association
+							li
+								a( href="/login" class="grey-text" ) Login
+			div( class="footer-copyright blue-grey darken-4" )
+				div( class="container left-align" )
+					span Copyright &copy; St. Mary's Shirva
+		div( class="modal white" id="newsModal" )
+			div( class="collection" id="mainInfo" ng-repeat="data in newsInfo" style="margin:0" )
+				div( class="collection-item grey lighten-4" )
+					span {{ data.title }}
+				div( class="collection-item" )
+					span {{ data.description }}
+				div( class="collection-item grey-text text-lighten-1" )
+					span Dated {{ data.date | date : 'fullDate' }}
+					br
+					span Updated {{ data.updatedAt | date : 'fullDate' }}
+				div( class="collection-item right-align" )
+					a( href="" class="btn grey darken-4" ng-click="showImgModal()" ) Show Images
+			div( class="collection" id="imgInfo" style="margin:0;display:none" )
+				a( href="" class="black-text right" ng-click="closeImgModal()" )
+					i( class="material-icons medium" ) close
+				div( class="container center-align" )
+					img( class="responsive-img" ng-repeat="data in newsPhoto" ng-src="/serverImages/?img={{ data }}" )
+		div( class="modal white" id="notifModal" )
+			div( class="collection" ng-repeat="data in notifInfo" style="margin:0" )
+				div( class="collection-item grey lighten-4" )
+					span {{ data.title }}
+				div( class="collection-item" )
+					span {{ data.description }}
+				div( class="collection-item grey-text text-lighten-1" )
+					span Dated {{ data.date | date : 'fullDate' }}
+					br
+					span Updated {{ data.updatedAt | date : 'fullDate' }}
+				div( class="collection-item right-align" )
+					a( href="" class="btn grey darken-4" ) Show Images

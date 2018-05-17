@@ -1,0 +1,29 @@
+extends ../layout/layout
+
+block content
+	script( src="js/controllers/login.js" )
+	div( ng-controller="loginCtrl" )
+		div( id="preloader" )
+			div( id="loader" )
+		div( id="loginContainer" class="valign-wrapper blue-grey darken-2" )
+			div( class="container center-align" )
+				div( class="container" )
+					div( class="collection z-depth-3" id="loginBlock" style="display:none;border:0" )
+						div( class="collection-item grey darken-4 z-depth-5" )
+							div( class='card z-depth-0 transparent' )
+								span( class="flow-text white-text" ) 
+						div( class="collection-item" )
+							form( name="loginFrm" ng-model="loginFrm" ng-submit="loginCheck(loginFrm.username,loginFrm.password)" )
+								div( class="row" )
+									div( class="input-field col l12 m12 s12" )
+										input( type="text" ng-model="username" name="username" pattern="[A-Za-z0-9]{5,16}" required )
+										label( for="username" ) Username
+									div( class="input-field col l12 m12 s12" )
+										input( type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" ng-model="password" name="password" required )
+										label( for="password" ) Password
+									input( type="submit" class="btn btn-large blue-grey hoverable" value="login into dashboard" ng-disabled="loginFrm.$invalid" )
+
+								
+
+
+			

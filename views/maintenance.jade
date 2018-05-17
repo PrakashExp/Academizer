@@ -1,0 +1,16 @@
+extends layout/layout
+
+block content
+	script( src="js/controllers/admin.js" )
+	div( ng-controller="maintenancePageCtrl" class="valign-wrapper row" id="errorContainer" )
+		div( class="card-panel col l12 m12 s12 z-depth-0" )
+			div( class="card-panel z-depth-0" )
+				h1
+					a( href="" class="yellow-text text-darken-2" ) 
+						i( class="material-icons medium yellow-text text-darken-2 left" ) warning
+					| Apologies !
+				h4 The page you were looking for
+				h4 is currently under maintenance
+				p Please try again after sometime
+				p Sorry for the inconvenience
+				p( class="flow-text grey-text" ) Error Code 503

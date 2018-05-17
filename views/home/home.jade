@@ -1,0 +1,190 @@
+extends ../layout/layout
+
+block content
+	script( src="js/controllers/home.js" )
+	div( ng-controller="homeCtrl" )
+		div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+			div( id="preloader" )
+				div( id="loader" )
+		div( class="fixed-action-btn" style="display:none;" )
+			a( class="btn-floating btn-large white" ng-click="scrollUp()" )
+				i( class="material-icons large black-text" ) arrow_upward
+		div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+			nav( class="z-depth-0 transparent center-align" )
+				div( style="height : inherit;"	 )
+					img( src="images/smclogo.png" class="left hide-on-med-and-down" style="height:inherit;" )
+					a( href="/" class="flow-text left hide-on-med-and-down" ) &nbsp;&nbsp; St. Mary's College
+					ul( class="right hide-on-med-and-down" )
+						li
+							a( href="/departments" ) Departments
+						li
+							a( href="/facilities" ) Facilities
+						li
+							a( href="/associations" ) Service Wings and Associations
+						li
+							a( href="/news" ) News and Events
+						li
+							a( href="/alumni" ) Alumni Association
+					a( href="/" class="flow-text hide-on-large-only" ) St.Mary's College
+					ul( id="slide-out" class="sidenav left-align" )
+						li( class="center-align" )
+							div( class="user-view" )
+								div( class="background" )
+									img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+								a( href="#!user" )
+									img( src="/images/smclogo.png" class="circle" )
+								a( href="#!name" )
+									span &nbsp;
+						div
+							li
+								a( href="/departments" )
+									i( class="material-icons" ) school
+									span Departments
+							li
+								a( href="/facilities" )
+									i( class="material-icons" ) library_books
+									span Facilities
+							li
+								a( href="/associations" ) 
+									i( class="material-icons" ) assignment_ind
+									span Associations
+							li
+								a( href="/news" ) 
+									i( class="material-icons" ) book
+									span News and Events
+							li
+								a( href="/alumni" ) 
+									i( class="material-icons" ) person_pin
+									span Alumni Association
+					a( href="#" data-target="slide-out" class="sidenav-trigger" )
+						i( class="material-icons" ) menu 
+		div( class="slider" )
+			ul( class="slides" )
+				li( class="black" )
+					img( src="/images/SlideImg/1.jpg" style="opacity:0.5;" )
+					div( class="caption center-align container" )
+						h5( class="flow-text" style="font-weight:bold" ) Providing higher education
+						span( class="flow-text" ) Any successful career starts with advanced higher education. At our university, you will have a deeper knowledge of the subjects that will be particularly useful when climbing the career ladder.
+						br
+						br
+						a( href="/alumni" class="btn blue darken-4 hoverable"  ) Start a journey
+				li( class="black" )
+					img( src="/images/SlideImg/2.jpg" style="opacity:0.5;" )
+					div( class="caption center-align container" )
+						h5( class="flow-text" style="font-weight:bold" ) Creating Your Future
+						span( class="flow-text" ) Together with our university's professors and academics, you can create the future for yourself. It means obtaining necessary skills and knowledge to make everything you learned here work for you in the future.
+						br
+						br
+						a( href="/alumni" class="btn blue darken-4 hoverable" ) Start a journey
+				li( class="black" )
+					img( src="/images/SlideImg/3.jpg" style="opacity:0.5;" )
+					div( class="caption center-align container" )
+						h5( class="flow-text" style="font-weight:bold" ) More Than Just Studying
+						span( class="flow-text" ) Besides providing you with new knowledge and training in chosen disciplines, our university also gives you an opportunity to benefit from spending your free time by playing sports, taking part in conferences, and enjoying student life.
+						br
+						br
+						a( href="/alumni" class="btn blue darken-4 hoverable" ) Start a journey
+		div( class="card-panel z-depth-0 row center-align" style="margin:0;" )
+			div( class="card-panel center-align z-depth-0 col l4 s12 m6" ng-repeat="data in HomePageInfo" style="height:360px" )
+				a( href="" )
+					div( class="card-panel hoverable z-depth-2" style="height:inherit;overflow:hiddden" )
+						a( href="" class="blue-grey-text" )
+							i( class="material-icons large" ) {{ data.icon }}
+						div( class="collection" style="border:0" )
+							div( class="collection-item flow-text" style="font-weight:bold" ) {{ data.title }}
+							div( class="collection-item" ) {{ data.description }}
+		div( class="card-panel z-depth-0 row lighten-5" style="margin:0" )
+			div( class="col card-panel l3 m6 s12 center-align z-depth-0 transparent" style="padding-top:30px;padding-bottom:30px" )
+				i( class="material-icons large black-text text-darken-4" ) school
+				div( class="counter counterPlus" data-count="150" class="blue-text text-darken-4" style="font-weight:bold" ) 0
+				span( class="flow-text" style="font-weight:bold" ) Graduates
+				br
+				span Every year 
+			div( class="col card-panel l3 m6 s12 center-align z-depth-0 transparent" style="padding-top:30px;padding-bottom:30px" )
+				i( class="material-icons large black-text text-darken-2" ) library_books
+				div( class="counter" data-count="30" class="blue-text text" class="blue-text text-darken-4" style="font-weight:bold" ) 0
+				span( class="flow-text" style="font-weight:bold" ) Lecturers
+				br
+				span Currently teaching
+			div( class="col card-panel l3 m6 s12 center-align z-depth-0 transparent" style="padding-top:30px;padding-bottom:30px" )
+				i( class="material-icons large black-text text-darken-4" ) person_add
+				div( class="counter" data-count="400" class="blue-text text-darken-4" style="font-weight:bold" ) 0
+				span( class="flow-text" style="font-weight:bold" ) Alumni
+				br
+				span Currently members
+			div( class="col card-panel l3 m6 s12 center-align z-depth-0 transparent" style="padding-top:30px;padding-bottom:30px" )
+				i( class="material-icons large black-text text-darken-2" ) supervisor_account
+				div( class="counter" data-count="800" class="blue-text text-darken-4" style="font-weight:bold" ) 0
+				span( class="flow-text counterPlus" style="font-weight:bold" ) Students
+				br
+				span Learning and growing
+		div( class="card-panel z-depth-0" style="margin:0" )
+			div( class="row center-align" )
+				div( class="col l6 m12 s12" )
+					img( src="http://www.smcshirva.com/images/raj.jpg" class="responsive-img z-depth-2 hoverable" style="height:270px" )
+					br
+					br
+				div( class="col l6 m12 s12 left-align z-depth-2" )
+					div( class="card-panel z-depth-0" )
+						blockquote( class="blue-bquote" )
+							span( class="flow-text grey-text text-darken-1" style="font-weight:bold" ) From Principal's Desk
+							br
+							br
+							span St Mary’s is a rural higher education institution offering UG and PG courses - B A, B Com, B B M, B C A, M.S.W(Master of Social Work) and M Com . Though situated in a panchayat area it works with the objective of preparing the youth to face future challenges. In addition, the college tries its best to add value to these programmes by offering add-on courses. Further, training is imparted in computer skills, life skills and spiritual values. Sports and games are also given equal importance on a par with the curriculum. The college is committed to transform those who seek admission for the courses as complete human beings. This is worked out through the total commitment and dedication on the part of the management and staff. We are gifted with these in an abundant measure by the grace of God and blessings of Mother Mary, Our Lady of Health.
+						div( class="right-align" )
+							span( class="flow-text grey-text text-darken-3" style="font-weight:bold" ) - Prof. Rajan V.N
+							br
+							span Principal
+		div( class="parallax-container valign-wrapper" )
+			div( class="row" )
+				div( class="col l12 s12 m12 center-align" )
+					span( class='flow-text' style="font-weight:bold" ) NAAC Accreditition
+					div( class="container" )
+						br
+						span( class="flow-text" ) The National Assessment and Accreditation Council, (NAAC) Bangalore is an autonomous body set up by the University Grants Commission, New Delhi, has accredited the college with ‘B’ Grade
+						p 
+							a( href="/public/images/Selfstd/1.pdf" class="btn blue darken-4"  target="_blank" ) Self Study report 2018
+			div( class="parallax" style="opacity:0.3" )
+				img( src="http://www.uwindsor.ca/studentaccessibility/sites/uwindsor.ca.studentaccessibility/files/styles/page_hero/public/big-stock-cropped.jpg?itok=Gt2oBFAK"  )
+		div( id="map-canvas" style="height: 380px;width: 100%;" )
+		div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+			div( class="container" )
+				div( class="row" )
+					div( class="col l6 s12" )
+						h5( class="white-text" ) St. Mary's Insights
+						p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+						p
+							a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+								i( class="social fa fa-facebook" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+								i( class="social fa fa-google-plus" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+								i( class="social fa fa-instagram" )
+							&nbsp;
+							&nbsp;
+							a( href="https://www.google.com/maps/dir/13.2199804,74.8198046/St.+Mary's+College,+Shirva,+Udupi,+Church+Road,+Shirva,+Karnataka+574106,+India/@13.2193959,74.8164032,16z/data=!4m16!1m6!3m5!1s0x3bbcae52fcbf8345:0xd42e2cf4388944ae!2sSt.+Mary's+College!8m2!3d13.2199425!4d74.8182678!4m8!1m1!4e1!1m5!1m1!1s0x3bbcae52fcbf8345:0xd42e2cf4388944ae!2m2!1d74.8182678!2d13.2199425" class="green btn-floating darken-2 btn-large waves-effect tooltipped" target="_blank" data-position="top" data-tooltip="Get Directions" )
+								i( class="social fa fa-map" )
+					div( class="col l2 s12" )
+					div( class="col l4 s12" )
+						h5 Useful Links
+						ul
+							li( class="" )
+								a( href="/departments" class="grey-text text-lighten-3" ) Departments
+							li( class="" )
+								a( href="/associations" class="grey-text text-lighten-3" ) Service wings
+							li( class="" )
+								a( href="/news" class="grey-text text-lighten-3" ) News and events
+							li( class="" )
+								a( href="/facilities" class="grey-text text-lighten-3" ) College Facilities
+							li( class="" )
+								a( href="/alumni" class="grey-text text-lighten-3" ) Alumni association
+							li
+								a( href="/login" class="grey-text" ) Login
+			div( class="footer-copyright blue-grey darken-4" )
+				div( class="container left-align" )
+					span Copyright &copy; St. Mary's Shirva
+			

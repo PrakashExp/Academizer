@@ -1,0 +1,428 @@
+extends ../../layout/layout
+
+block content
+    script( src="/js/controllers/admin.js" )
+    div( ng-controller="adminDeptCtrl" )
+        div( class="center-align hide-on-large-only" )
+            div( class="container" )
+                div( class="card-panel z-depth-0" )
+                    div( class="card-panel" )
+                        button( class="btn-floating right grey darken-4" )
+                            i( class="material-icons" ) 
+                        div( class="container" )
+                            div( class="card-panel z-depth-0" )
+                                img( class="responsive-img" style="height:100px" src="../images/smclogo.png" )
+                        span( class="flow-text" ) This Layout is Not Supported to be Viewable in Phones and Tablet. Please use Desktop instead!
+        div( class="hide-on-med-and-down" )
+            div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+                div( id="preloader" )
+                    div( id="loader" )
+            div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+                nav( class="z-depth-0 transparent" )
+                    a( href="/admin" class="flow-text" ) St. Mary's College | Departments
+                    ul( id="slide-out" class="sidenav" )
+                        li
+                            div( class="user-view" )
+                                div( class="background" )
+                                    img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+                                a( href="#!user" )
+                                    img( src="/images/smclogo.png" class="circle" )
+                                a( href="#!name" )
+                                    span( class="black-text name" ) &nbsp;
+                        li( class="divider" )
+                        li( class="active" )
+                            a( href="" ng-click="redirectTo('manageDepts')" )
+                                i( class="material-icons" ) school
+                                span Manage Departments
+                        li
+                            a( href="" ng-click="redirectTo('manageFacilities')" )
+                                i( class="material-icons" ) library_books
+                                span Manage Fecilities
+                        li
+                            a( href="" ng-click="redirectTo('manageAssociations')" )
+                                i( class="material-icons" ) assignment_ind
+                                span Manage Associations
+                        li
+                            a( href="" ng-click="redirectTo('manageNews')" )
+                                i( class="material-icons" ) book
+                                span Update News
+                        li
+                            a( href="" ng-click="redirectTo('manageAlumni')" )
+                                i( class="material-icons" ) person_pin
+                                span Update Alumni
+                        li( class="divider" )
+                        li
+                            a( href="/admin" class="btn grey darken-1" ) Get to the dashboard
+                    a( href="#" data-target="slide-out" class="sidenav-trigger show-on-small show-on-medium-and-up" )
+                        i( class="material-icons" ) menu 
+            div( class="card-panel z-depth-0" id="mainBlock" )
+                div( class="row" )
+                    //Left Side Block
+                    div( class="col l4 s12 m5" )
+                        div( id="leftBlock" )
+                            // Creating Department
+                            div( class="collection z-depth-1" )
+                                div( class="collection-item grey lighten-4" )
+                                    span Create a Department
+                                div( class="collection-item" )
+                                    form( ng-model="createDeptFrm" name="createDeptFrm" ng-submit="createDept(createDeptFrm.deptName,createDeptFrm.deptDesc)" )
+                                        div( class="row" )
+                                            div( class="input-field col l12 s12 m12" )
+                                                input( type="text" ng-model="deptName" name="deptName" pattern="[A-Za-z ]*" required )
+                                                label( for="deptName" ) Enter Department Name
+                                                span( class="helper-text" ) Eg. Computer Science, Commerce, Department Name Cant be edited
+                                            div( class="input-field col l12 s12 m12" )
+                                                textarea( id="textarea1" class="materialize-textarea" pattern="[A-Za-z0-9()-.,/;' ]*" ng-model="deptDesc" name="deptDesc" required )
+                                                label( for="textarea1" ) Enter Department Description
+                                                span( class="helper-text" ) Only Alphabets, Numbers and ().,-/; are allowed
+                                            input( type="text" placeholder=" " name="deptNameToBeBound" ng-model="deptNameToBeBound" style="display:none" )
+                                            input( type="text" placeholder=" " name="otherNamesToBeBound" ng-model="otherNamesToBeBound" style="display:none" )
+                                            input( type="text" placeholder=" " name="holder1" ng-model="holder1" style="display:none" )
+                                            input( type="text" placeholder=" " name="holder2" ng-model="holder2" style="display:none" )
+                                            button( type="submit" class="btn btn-floating right grey darken-4" value="" ng-disabled="createDeptFrm.$invalid" )
+                                                i( class="material-icons" ) add
+                                    div( class="progress" id="createDeptLoader" style="display:none" )
+                                        div( class="indeterminate" )
+                            //Department List
+                            div( class="collection z-depth-1")
+                                div( class="collection-item grey lighten-4" ) Departments Added
+                                a( href="" ng-repeat="dept in deptNames track by $index" class="collection-item black-text" ng-bind="dept.name" ng-click="showDeptDetails(dept.nameInDb)" )
+                            div( class="card-panel center-align z-depth-0 center-align" id="noDeptShow" style="border:dotted #EFEAE9 10px;")
+                                span( class="grey-text" ) Added Departments will be displayed here!
+                            //ScrollSpy list
+                            div( class="col hide-on-small-only m12 s12 l12" id="scrollspyRef" )
+                                div( id="scrollspyContent" )
+                                    ul( class="section table-of-contents" )
+                                        li
+                                            a( href="#basicHolder" class="flow-text" ) Basic Information
+                                        br
+                                        br
+                                        br
+                                        li
+                                            a( href="#facultyHolder" class="flow-text") Faculty Details
+                                        br
+                                        br
+                                        br
+                                        li
+                                            a( href="#newsHolder" class="flow-text" ) News Details
+                    //Right Side Block
+                    div( class="col l8 s12 m7" )
+                        //Basic Department Block
+                        div( id="basicHolder" class="section scrollspy" )
+                            div( ng-repeat="dept in deptDetails" )
+                                div( class="progress" id="showDeptLoader" style="display:none" )
+                                    div( class="indeterminate" )
+                                ul( class="collection with-header z-depth-1" )
+                                    li( class="collection-header grey lighten-4" )
+                                        span {{ dept.name }} Department
+                                        a( class="btn-floating right red darken-2 z-depth-3 modal-trigger" href="#deleteDeptReq")
+                                            i( class="material-icons" ) delete
+                                    li( class="collection-item" )
+                                        blockquote( class="blue-bquote" )
+                                            span( ng-bind="dept.description" )
+                                ul( class="collection with-header z-depth-1" )
+                                    li( class="collection-header grey lighten-4" )
+                                        span Department Highlights
+                                    li( class="collection-item" ) {{ dept.highlights[0] }}
+                                    li( class="collection-item" ) {{ dept.highlights[1] }}
+                                    li( class="collection-item" ) {{ dept.highlights[2] }}
+                                    li( class="collection-item grey-text right-align" )
+                                        a( class="btn right-align blue darken-4 waves-effect modal-trigger left" href="#editSelectedDept" ng-click="editDeptPreFunction(dept)" ) Edit Basic Info
+                                        span Department Created 
+                                        span( am-time-ago="dept.createdAt" )
+                                        br
+                                        span Last Updated 
+                                        span( am-time-ago="dept.updatedAt" )
+                        //Faculty Department Block
+                        div( id="facultyHolder" )
+                            div( class="section scrollspy" id="facultyHolder" )
+                                ul( class="collection with-header z-depth-1" )
+                                    li( class="collection-header grey lighten-4" )
+                                        span Faculty Information
+                                    li( class="collection-item" )
+                                        ul( class="collapsible" )
+                                            li
+                                                div( class="collapsible-header grey lighten-4" )
+                                                    i( class="material-icons left" ) add
+                                                    span( class="left" ) Add a Faculty here
+                                                div( class="collapsible-body" )
+                                                    form( class="row" name="facultyFrm" ng-model="facultyFrm" ng-submit="addFaculty( facultyFrm.facultyName,facultyFrm.facultyDesc ,facultyFrm.facultyQual,facultyFrm.facultyDesig,facultyFrm.facultyDoj )" )
+                                                        div( class="col l12 s12 m12" )
+                                                            div( class="input-field col l12 s12 m12" )
+                                                                i( class="material-icons prefix left" ) account_circle
+                                                                input( placeholder=" " type="text" name="facultyName" pattern="[A-Za-z' ]*" ng-model="facultyName" required )
+                                                                label( for="facultyName" ) Enter Faculty Name
+                                                                span( class="helper-text" ) Eg. John Doe
+                                                            div( class="input-field col l12 s12 m12" )
+                                                                i( class="material-icons prefix left" ) description
+                                                                textarea( placeholder=" " id="textarea3" class="materialize-textarea" pattern="[A-Za-z0-9().,-;/' ]*" ng-model="facultyDesc" name="facultyDesc" required )
+                                                                label( for="facultyDesc" ) Enter Faculty Description
+                                                            div( class="input-field col l12 s12 m12" )
+                                                                i( class="material-icons prefix left" ) school
+                                                                input( type="text" placeholder=" " name="facultyQual" ng-model="facultyQual" pattern="[A-Za-z0-9().,-;/ ]*" required )
+                                                                label( for="facultyQual" ) Enter Faculty Qualification
+                                                                span( class="helper-text" ) Eg. Msc in Computer Science
+                                                            div( class="input-field col l12 s12 m12" )
+                                                                i( class="material-icons prefix left" ) supervisor_account
+                                                                input( type="text" placeholder=" " name="facultyDesig" pattern="[A-Za-z ]*" ng-model="facultyDesig" required )
+                                                                label( for="facultyDesig" ) Enter Faculty Designation
+                                                                span( class="helper-text" ) Eg. Lecturer, Head of the Department,Principal
+                                                            div( class="input-field col l12 s12 m12" ng-init="fac();" )
+                                                                i( class="material-icons prefix left" ) update
+                                                                input( type="date" placeholder=" " ng-init="facDatepicker();" min="1980-01-02" class="facDatepicker" name="facultyDoj" ng-model="facultyDoj" required )
+                                                                //label( for="facultyDoj" ) Enter Faculty Date of Join
+                                                            input( type="submit" class="btn blue darken-3" value="Enter Details" ng-disabled="facultyFrm.$invalid" )
+                                                div( class="progress" id="facultyLoader" )
+                                                    div( class="indeterminate" )
+                                    li( class="collection-item grey lighten-4" )
+                                        span Added faculty
+                                    li( class="collection-item" )
+                                        nav( class="white z-depth-0" )
+                                            div( class="nav-wrapper white" )
+                                                form
+                                                    div( class="input-field" )
+                                                        input( type="search" id="search" placeholder="Search Faculty Info, Achievements here" ng-model="searchFac" )
+                                                        label( class="label-icon left" for="search" )
+                                                            i( class="material-icons black-text" ) search
+                                    li( class="collection-item center-align" ng-if="ff==0" )
+                                        span No Faculty Records Found
+                                    li( class="collection-item right-align" )   
+                                        ul( class="collapsible z-depth-1" )
+                                            li( ng-repeat="faculty in faculties | filter : searchFac as ff" )
+                                                div( class="collapsible-header" ng-click="saveOtherInfo(faculty._id)" )
+                                                    i( class="material-icons prefix left" ) account_circle
+                                                    span {{ faculty.name }}
+                                                div( class="collapsible-body left-align grey lighten-3" )
+                                                    div( class="row card-panel" )
+                                                        ul( class="collection col l7 card z-depth-0" )
+                                                            li( class="collection-item" ng-bind="faculty.name" )
+                                                            li( class="collection-item" ng-bind="faculty.description" )
+                                                            li( class="collection-item" ng-bind="faculty.designation" )
+                                                            li( class="collection-item" ) 
+                                                                span {{ faculty.doj | date }}
+                                                            li( class="collection-item" ng-bind="faculty.qualification" )
+                                                            li( class="card-panel z-depth-0" )
+                                                                button( class="btn blue-grey darken-4 btn modal-trigger left" href="#editFacultyInfo" ng-click="bindFacultyInfo(faculty)" ) Edit
+                                                                button( class="btn blue-grey darken-4 right" ng-click="deleteFaculty(faculty._id)" ) Delete
+                                                            li( class="collection-item grey-text" )
+                                                                span Faculty Created 
+                                                                span( am-time-ago="faculty.createdAt" )
+                                                                br
+                                                                span Last Updated 
+                                                                span( am-time-ago="faculty.updatedAt" )
+                                                            br
+                                                            br
+                                                        div( class="container col l5" )
+                                                            div( class="card-panel center-align z-depth-0" ) 
+                                                                img( ng-src="/serverImages/?img={{ faculty.image }}" class="responsive-img" )
+                                                                form( name="facultyImg" ng-model="facultyImg" )
+                                                                    div( class="file-field input-field" )
+                                                                        div( class="card z-depth-0 center-align" )
+                                                                            button( class="btn-floating waves-light grey darken-4" ngf-select="upload($file, faculty._id)" ng-model="file" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-validate="{size:'2MB'}" )
+                                                                                i( class="material-icons" ) file_upload
+                                                        ul( class="collection col l12 card-panel z-depth-0" )
+                                                            li( class="collection-item grey lighten-4 grey-text" )
+                                                                span Add Achievements
+                                                            li( class="collection-item" )
+                                                                form( name="facAch" ng-model="facAch" ng-submit="addAch(facAch.facAchTitle,facAch.facAchDesc)" )
+                                                                    div( class="input-field col s12 m12 l12" )
+                                                                        input( type="text" placeholder=" "   name="facAchTitle" id="facAchTitle" ng-model="facAchTitle" )
+                                                                        label( for="facAchTitle" ) Achievement Title
+                                                                        span( class="helper-text" ) Category Names cant be edited and Should be Unique, You can add Contents to the Block clicking edit button
+                                                                    div( class="input-field col l12 s12 m12" )
+                                                                        textarea( placeholder=" " id="textarea2"  ng-init="fac();" class="materialize-textarea" ng-model="facAchDesc" name="facAchDesc" required )
+                                                                        label( for="facAchDesc" ) Achievement Description
+                                                                    input( type="submit" value="Add" class="btn blue darken-4" ng-disabled="facAch.$invalid" )
+                                                            li( class="collection-item left-align" ng-repeat="ach in faculty.achievement" )
+                                                                button( class="btn-floating right red" ng-click="deleteAch(ach.achCat, $index)" )
+                                                                    i( class="material-icons" ) delete
+                                                                button( class="btn-floating right blue" ng-click="bindEditAch(ach.achCat, ach.achDesc)" )
+                                                                    i( class="material-icons" ) edit
+                                                                blockquote
+                                                                    span( class="flow-text" ng-bind="ach.achCat" )
+                                                                hr
+                                                                span( ng-bind="ach.achDesc" )
+                        div( class="section scrollspy" id="newsHolder" )
+                            ul( class="collection with-header z-depth-1" )
+                                li( class="collection-header grey lighten-4" )
+                                    span News And Events        
+                                li( class="collection-item" )
+                                    ul( class="collapsible popout" )
+                                        li
+                                            div( class="collapsible-header grey lighten-4" )
+                                                i( class="material-icons left" ) add
+                                                span( class="left" ) Add a Department News here
+                                            div( class="collapsible-body" )
+                                                form( class="row" name="newsFrm" ng-model="newsFrm" ng-submit="addNews( newsFrm.newsTitle,newsFrm.newsDesc )" )
+                                                    div( class="col l12 s12 m12" )
+                                                        div( class="input-field col l12 s12 m12" )
+                                                            i( class="material-icons prefix left" ) title
+                                                            input( type="text" placeholder=" " pattern="[A-Za-z0-9.' ]*" name="newsTitle" ng-model="newsTitle"  required )
+                                                            label( for="newsTitle" ) Enter News Title
+                                                            span( class="helper-text" ) Only Alphabets and Numbers are allowed
+                                                        div( class="input-field col l12 s12 m12" )
+                                                            i( class="material-icons prefix left" ) description
+                                                            textarea( id="textarea3" placeholder=" " class="materialize-textarea" pattern="[A-Za-z0-9()-.,/;' ]*" ng-model="newsDesc" name="newsDesc" required )
+                                                            label( for="newsDesc" ) Enter News Description
+                                                            span( class="helper-text" ) News Description only allows -.,/;' these symbols, alphabets and numbers
+                                                        input( type="submit" class="btn blue darken-3" value="Add News" ng-disabled="newsFrm.$invalid" )
+                                            div( class="progress" id="newsLoader" )
+                                                div( class="indeterminate" )
+                                li( class="collection-item" )
+                                    nav( class="white z-depth-0" )
+                                        div( class="nav-wrapper white" )
+                                            form
+                                                div( class="input-field" )
+                                                    input( type="search" id="search" placeholder="Search Department News, Department Description here" ng-model="searchNews" )
+                                                    label( class="label-icon left" for="search" )
+                                                        i( class="material-icons black-text" ) search
+                                li( class="collection-item center-align" ng-if="sn==0" )
+                                    span No News Records Found
+                                li( class="collection-item" )
+                                    ul( class="collapsible" )
+                                        li( ng-repeat="news in newsArray | filter : searchNews as sn" )
+                                            div( class="collapsible-header")
+                                                i( class="material-icons prefix left black-text" ) description
+                                                {{ news.title }}
+                                            div( class="collapsible-body" )
+                                                span( ng-bind="news.description" )                                                
+                                                div( class="card-panel z-depth-0 center-align" )
+                                                    div( class="row" )
+                                                        div( class="col l4" ng-repeat="image in news.photos" )
+                                                            img( ng-src="/serverImages/?img={{ image }}" style="height:140px;" class="responsive-img" )
+                                                            br
+                                                            a( href="" class="btn-floating red" )
+                                                                i( class="material-icons left" ng-click="deleteNewsImg(image,news._id)" ) delete
+                                                            &nbsp;&nbsp;    
+                                                            label Delete the Image
+                                                div( class="collection-item" )
+                                                    div( class="grey-text right-align" )
+                                                        span News Added 
+                                                        span( am-time-ago="news.createdAt" )
+                                                        br
+                                                        span Last Updated 
+                                                        span( am-time-ago="news.updatedAt" )
+                                                div( class="collection-item right-align" )  
+                                                    a( href="" class="btn grey z-depth-1 lighten-4 black-text" ng-click="deleteNews(news._id)" ) Delete News
+                                                        i( class="material-icons left" ) delete
+                                                    a( class="btn grey lighten-4 z-depth-1 modal-trigger black-text" ng-click="editBindNews(news.title,news.description,news._id)" href="#editNewsModal") Edit News
+                                                        i( class="material-icons left" ) edit
+                                                    a( class="btn z-depth-1 grey lighten-4 black-text" ngf-select="uploadNewsImg($file, news._id)" ng-model="newsImg" name="newsImg" ngf-pattern="'image/*'" ngf-accept="'image/*'" ) Upload Image
+                                                        i( class="material-icons left" ) file_upload
+                        div( class="card-panel z-depth-0 center-align" id="feature1" )
+                            div( class="container" )
+                                span( class="flow-text" ) Click on the Listed Departments to Edit the Departments. You can Create a Department By Entering the Name and Description in the Adjuscent column.
+                                br
+                                span( class="flow-text" ) Then click&nbsp;&nbsp; 
+                                button( class="btn-floating grey darken-4 pulse" )
+                                    i( class="material-icons" ) add
+                                span( class="flow-text" ) &nbsp;&nbsp;To add the Department
+            div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+                div( class="container" )
+                    div( class="row" )
+                        div( class="col l6 s12" )
+                            h5( class="white-text" ) St. Mary's Insights
+                            p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+                            p
+                                a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+                                    i( class="social fa fa-facebook" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+                                    i( class="social fa fa-google-plus" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+                                    i( class="social fa fa-instagram" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+                                    i( class="social fa fa-map" )
+                        div( class="col l2 s12" )
+                        div( class="col l4 s12" )
+                            h5 Useful Links
+                            ul
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageDepts')" class="grey-text text-lighten-3" ) Manage Departments
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageAssociations')" class="grey-text text-lighten-3" ) Manage Service wings
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageNews')" class="grey-text text-lighten-3" ) Manage News and events
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageFacilities')" class="grey-text text-lighten-3" ) Manage College Facilities
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageAlumni')" class="grey-text text-lighten-3" ) Manage Alumni association
+                                li( class="" )
+                                    a( href="/" class="grey-text text-lighten-3" ) Home
+                div( class="footer-copyright blue-grey darken-4" )
+                    div( class="container left-align" )
+                        span Copyright &copy; St. Mary's Shirva        
+            //Delete Department Acknowledgement
+            div( id="deleteDeptReq" class="modal" )
+                div( class="modal-content center-align" )
+                    span( class="flow-text" ) Do you Really Want to Delete the Entire Department?
+                    br
+                    br
+                    div( class="container" )
+                        span All the Data including the Faculty info and Department news will be deleted Permanently
+                div( class="modal-footer" )
+                    a( href="" class="modal-action modal-close waves-effect waves-green btn red" ng-click="deleteDept()" ) Yes 
+                    a( href="" class="modal-action modal-close waves-effect waves-green btn blue" ) No
+            //Edit News Block
+            div( id="editNewsModal" class="modal" )
+                form( ng-model="editNewsFrm" name="editNewsFrm" ng-submit="editDeptNews(editNewsFrm.editNewsTitle,editNewsFrm.editNewsDesc)" )
+                    div( class="modal-content center-align" )
+                        div( class="row" )
+                            div( class="input-field col l12 s12 m12" )
+                                input( type="text" placeholder=" " ng-model="editNewsTitle" pattern="[A-Za-z0-9.' ]*" name="editNewsTitle" maxlength="" required )
+                                label( for="editNewsTitle" ) Edit News Title
+                            div( class="input-field col l12 s12 m12" )
+                                textarea( id="textarea4" placeholder=" " class="materialize-textarea" pattern="[A-Za-z0-9()-.,/;' ]*" ng-model="editNewsDesc" name="editNewsDesc" required )
+                                label( for="editNewsDesc" ) Enter News Description
+                    div( class="modal-footer" )
+                        input( type="submit" class="btn blue white-text modal-action modal-close" value="Enter Details" ng-disabled="editNewsFrm.$invalid" )
+            //Edit Department Block
+            div( id="editSelectedDept" class="modal modal-fixed-footer" )
+                div( class="modal-content center-align" )
+                    form( ng-model="editDeptFrm" name="editDeptFrm" )
+                        div( class="row" )
+                            div( class="input-field col l12 s12 m12" )
+                                input( id="disabled" placeholder="Department Name Cant be Edited" disabled type="text" ng-value="editDeptName" class="" )
+                                span( class="helper-text" ) Department Name Cant be edited
+                            div( class="input-field col l12 s12 m12" )
+                                textarea( placeholder=" " class="materialize-textarea" pattern="[A-Za-z0-9()-.,' ]*" ng-model="editDeptDesc" name="editDeptDesc" data-length="1500" required )
+                                label( for="editDeptDesc" ) Enter New Department Description
+                                span( class="helper-text" ) Only Alphabets, Numbers and ().,- are allowed
+                            div( class="input-field col l12 s12 m12" )
+                                input( type="text" name="high1" ng-model="high1" pattern="[A-Za-z0-9()-.,;/ ]*" placeholder="Place Department Highlights here")
+                                input( type="text" name="high2" ng-model="high2" pattern="[A-Za-z0-9()-.,;/ ]*" placeholder="Place Department Highlights here")
+                                input( type="text" name="high3" ng-model="high3" pattern="[A-Za-z0-9()-.,;/ ]*" placeholder="Place Department Highlights here")
+                                span( class="helper-text" ) Only Alphabets, Numbers and ().,- are allowed
+                div( class="modal-footer" )
+                    a( href="" class="modal-action modal-close waves-effect waves-green btn blue darken-4" ng-click="editSelectedDept(editDeptFrm.editDeptName,editDeptFrm.editDeptDesc,editDeptFrm.high1,editDeptFrm.high2,editDeptFrm.high3)" ng-disabled="editDeptFrm.$invalid" ) Edit Information
+            //Edit Faculty Block
+            div( id="editFacultyInfo" class="modal container modal-fixed-footer" )
+                form( name="editFacultyFrm" ng-model="editFacultyFrm" ng-submit="editFacultyInfo(editFacultyFrm.editFacultyName, editFacultyFrm.editFacultyDesc, editFacultyFrm.editFacultyQual,editFacultyFrm.editFacultyDesig,editFacultyFrm.editFacultyDoj)" )
+                    div( class="modal-content center-align row" )
+                        div( class="input-field col l12 s12 m12" )
+                            i( class="material-icons prefix left" ) account_circle
+                            input( type="text" name="editFacultyName" placeholder="" pattern="[A-Za-z' ]*" ng-model="editFacultyName" required )
+                            label( for="editFacultyName" class="active" ) Enter Faculty Name
+                        div( class="input-field col l12 s12 m12" )
+                            i( class="material-icons prefix left" ) description
+                            textarea( id="textarea3" class="materialize-textarea" pattern="[A-Za-z0-9()-.,/'; ]*" placeholder="" ng-model="editFacultyDesc" name="editFacultyDesc" required )
+                            label( for="editFacultyDesc" class="active" ) Enter Faculty Description
+                        div( class="input-field col l12 s12 m12" )
+                            i( class="material-icons prefix left" ) school
+                            input( type="text"  name="editFacultyQual" placeholder="" pattern="[A-Za-z0-9().,-;/ ]*" ng-model="editFacultyQual" required )
+                            label( for="editFacultyQual" class="active" ) Enter Faculty Qualification
+                        div( class="input-field col l12 s12 m12" )
+                            i( class="material-icons prefix left" ) supervisor_account
+                            input( type="text" name="editFacultyDesig" placeholder="" pattern="[A-Za-z ]*" ng-model="editFacultyDesig" required )
+                            label( for="editFacultyDesig" class="active" ) Enter Faculty Designation
+                        div( class="input-field col l12 s12 m12" )
+                            i( class="material-icons prefix left" ) update
+                            input( type="date" name="editFacultyDoj" ng-init="facDatepicker();" min="1980-01-02" class="facDatepicker" ng-model="editFacultyDoj" placeholder="" required )
+                            label( for="editFacultyDoj" class="active" ) Enter Faculty Date of Join
+                    div( class="modal-footer" )
+                        input( type="submit" value="Edit Information" class="btn" ng-disabled="editFacultyFrm.$invalid" )

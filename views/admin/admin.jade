@@ -1,0 +1,289 @@
+extends ../layout/layout
+
+block content
+	script( src="/js/controllers/admin.js" )
+	div( ng-controller="adminCtrl" )
+		div( class="center-align hide-on-large-only" )
+			div( class="container" )
+				div( class="card-panel z-depth-0" )
+					div( class="card-panel center-align" )
+						button( class="btn-floating right grey darken-4" )
+							i( class="material-icons" )
+						div( class="container" )
+							div( class="card-panel z-depth-0" )
+								img( class="responsive-img" style="height:100px" src="../images/smclogo.png" )
+							span( class="flow-text" ) This Layout is Not Supported to be Viewable in Phones and Tablet. Please use Desktop instead!
+		div( class="hide-on-med-and-down" )
+			div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+				div( id="preloader" )
+					div( id="loader" )
+			div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+				nav( class="z-depth-0 transparent" )
+					a( href="/admin" class="flow-text" ) St. Mary's Admin | Dashboard
+					ul( id="slide-out" class="sidenav" )
+						li
+							div( class="user-view" )
+								div( class="background" )
+									img( src="images/slideImg/1.jpg" class="responsive-img" style="opacity:0.5;" )
+								a( href="#!user" )
+									img( src="/images/smclogo.png" class="circle" )
+								a( href="#!name" )
+									span( class="black-text name" ) &nbsp;
+						li
+							a( href="" ng-click="redirectTo('manageDepts')" )
+								i( class="material-icons" ) school
+								span Manage Departments
+						li
+							a( href="" ng-click="redirectTo('manageFacilities')" )
+								i( class="material-icons" ) library_books
+								span Manage Facilities
+						li
+							a( href="" ng-click="redirectTo('manageAssociations')" )
+								i( class="material-icons" ) assignment_ind
+								span Manage Association
+						li
+							a( href="" ng-click="redirectTo('manageNews')" )
+								i( class="material-icons" ) book
+								span Manage News
+						li
+							a( href="" ng-click="redirectTo('manageAlumni')" )
+								i( class="material-icons" ) person_pin
+								span Manage Alumni
+					a( href="#" data-target="slide-out" class="sidenav-trigger show-on-small show-on-medium-and-up" )
+						i( class="material-icons" ) menu 
+			div( class="row card-panel valign-wrapper z-depth-0" style="padding-bottom:0" )
+				div( class="collection col l8 z-depth-0" )
+					div( class="collection-item z-depth-1 row" style="padding:0" )
+						div( class="col l4 collection-item z-depth-1 center-align" )
+							br
+							div( style="padding:30px;" )
+								span( style="font-size : 72px" ) {{ departmentCount }}
+							br
+							span Department has been already added! Add a few more in the department Section
+							br
+							br
+							a( href="" class="btn blue-grey darken-2" ng-click="redirectTo('manageDepts')" ) Departments
+							br
+							br
+						div( class="col l4 collection-item z-depth-1 center-align" )
+							br
+							div( style="padding:30px" )
+								span( style="font-size : 72px" ) {{ associationCount }}
+							br
+							span Associations has been already added! Add a few more in the department Section
+							br
+							br
+							a( href="" class="btn blue-grey darken-2" ng-click="redirectTo('manageAssociations')" ) Associations
+							br
+							br
+						div( class="col l4 collection-item z-depth-1 center-align" )
+							br
+							div( style="padding:30px" )
+								span( style="font-size : 72px" ) {{ alumniCount }}
+							br
+							span Alumni has been already Registered! Add a few more in the department Section
+							br
+							br
+							a( href="" class="btn blue-grey darken-2" ng-click="redirectTo('manageAlumni')" ) Alumni
+							br
+							br
+				div( class="center-align card-panel col l4 z-depth-0" )
+					div( class="collection z-depth-2" )
+						div( class="collection-item grey lighten-4 center-align" )
+							span Admin Essentials
+						div( class="collection-item hoverable center-align" )
+							table( class="centered highlight" )
+								tr
+									td Username
+									td= username
+							div( class="collection z-depth-0" style="border:0" )
+								div( class="collection-item" )
+									a( href="#changeCredentials" class="btn red darken-2 modal-trigger hoverable" ) Password Change
+								div( class="collection-item" )
+									a( href="" class="btn blue-grey darken-4 hoverable" ng-click="logoutAdmin()" ) Log Out !
+					div( class="collection z-depth-2" )
+						div( class="collection-item center-align grey lighten-4" ) Alumni Detail Extraction
+						div( class="collection-item" )
+							form( name="alumniIDForm" ng-model="alumniIDForm" ng-submit="getAlumniIDDetails(alumniIDForm.alumniID)" )
+								div( class="input-field" )
+									input( type="text" pattern="[A-Za-z0-9]{24}" ng-model="alumniID" name="alumniID" required)
+									label( for="alumniIDForm" ) Enter Alumni ID here
+								input( type="submit" class="btn" ng-disabled="alumniIDForm.$invalid" )
+			div( class="row z-depth-0 card-panel" )
+				div( class="col l6 collection center-align z-depth-2" style="padding:0" )
+					div( class="collection-item grey lighten-4" ) Manage Academic Roll of Honor
+					div( class="collection-item row" )
+						ul( class="collapsible" )
+							li
+								div( class="collapsible-header" ) Add Content to Role of Honor
+								div( class="collapsible-body" )
+									form( name="ROHacademics" ng-model="ROHacademics" ng-submit="submitROHA(ROHacademics.ROHName,ROHacademics.ROHEvent,ROHacademics.ROHYear,ROHacademics.ROHLevel)" )
+										div( class="input-field col l12" )
+											input( type="text" pattern="[A-Za-z' ]*" name="ROHName" ng-model="ROHName" required )
+											label( for="ROHName" ) Enter the name
+										div( class="input-field col l12" )
+											input( type="text" pattern="[A-Za-z ]*" name="ROHEvent" ng-model="ROHEvent" required )
+											label( for="ROHName" ) Enter the Course
+										div( class="input-field col l12" )
+											input( type="number" min="1980" ng-max="{{ alumniYear }}" name="ROHYear" ng-model="ROHYear" required )
+											label( for="ROHName" ) Enter the Year
+											span( class="helper-text" ) Year should be between 1980 to Present year
+										div( class="input-field col l12" )
+											input( type="text" pattern="[A-Za-z0-9 ]*" name="ROHLevel" ng-model="ROHLevel" required )
+											label( for="ROHName" ) Enter the Level of rank
+											span( class="helper-text" ) Eg. First rank, Second rank
+										input( type="submit" class="btn blue darken-4" value="Submit Values" ng-disabled="ROHacademics.$invalid" )
+						div( class="collection" )
+							a( href="#rohaManageModal" class="collection-item left-align modal-trigger" ng-repeat="roh in rohaclist" ng-click="bindRohaDetails(roh)" ) {{ roh.name }}
+				div( class="col l6 collection center-align z-depth-2" style="padding:0" )
+					div( class="collection-item grey lighten-4" ) Manage Sports Roll of Honor
+					div( class="collection-item row" )
+						ul( class="collapsible" )
+							li
+								div( class="collapsible-header" ) Add Content to Role of Honor
+								div( class="collapsible-body" )
+									form( name="ROHsports" ng-model="ROHsports" ng-submit="submitROHS(ROHsports.ROHSName,ROHsports.ROHSEvent,ROHsports.ROHSYear,ROHsports.ROHSLevel)" )
+										div( class="input-field col l12" )
+											input( type="text" pattern="[A-Za-z' ]*" name="ROHSName" ng-model="ROHSName" required )
+											label( for="ROHSName" ) Enter the name
+										div( class="input-field col l12" )
+											input( type="text" pattern="[A-Za-z ]*" name="ROHSEvent" ng-model="ROHSEvent" required )
+											label( for="ROHSName" ) Enter the Event
+										div( class="input-field col l12" )
+											input( type="number" min="1980" ng-max="{{ alumniYear }}" name="ROHSYear" ng-model="ROHSYear" required )
+											label( for="ROHNSame" ) Enter the Year
+											span( class="helper-text" ) Year should be between 1980 to Present year
+										div( class="input-field col l12" )
+											input( type="text" pattern="[A-Za-z' ]*" name="ROHSLevel" ng-model="ROHSLevel" required )
+											label( for="ROHName" ) Enter the Level
+											span( class="helper-text" ) Eg. University level / Intravarsity level
+										input( type="submit" class="btn blue darken-4" value="Submit Values" ng-disabled="ROHsports.$invalid" )
+						div( class="collection" )
+							a( href="#rohsManageModal" class="collection-item left-align modal-trigger" ng-repeat="roh in rohsplist" ng-click="bindRohsDetails(roh)" ) {{ roh.name }}
+			div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+				div( class="container" )
+					div( class="row" )
+						div( class="col l6 s12" )
+							h5( class="white-text" ) St. Mary's Insights
+							p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+							p
+								a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+									i( class="social fa fa-facebook" )
+								&nbsp;
+								&nbsp;
+								a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+									i( class="social fa fa-google-plus" )
+								&nbsp;
+								&nbsp;
+								a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+									i( class="social fa fa-instagram" )
+								&nbsp;
+								&nbsp;
+								a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+									i( class="social fa fa-map" )
+						div( class="col l2 s12" )
+						div( class="col l4 s12" )
+							h5 Useful Links
+							ul
+								li( class="" )
+									a( href="" ng-click="redirectTo('manageDepts')" class="grey-text text-lighten-3" ) Manage Departments
+								li( class="" )
+									a( href="" ng-click="redirectTo('manageAssociations')" class="grey-text text-lighten-3" ) Manage Service wings
+								li( class="" )
+									a( href="" ng-click="redirectTo('manageNews')" class="grey-text text-lighten-3" ) Manage News and events
+								li( class="" )
+									a( href="" ng-click="redirectTo('manageFacilities')" class="grey-text text-lighten-3" ) Manage College Facilities
+								li( class="" )
+									a( href="" ng-click="redirectTo('manageAlumni')" class="grey-text text-lighten-3" ) Manage Alumni association
+								li( class="" )
+									a( href="/" class="grey-text text-lighten-3" ) Home
+				div( class="footer-copyright blue-grey darken-4" )
+					div( class="container left-align" )
+						span Copyright &copy; St. Mary's Shirva
+			div( class="modal white center-align" id="changeCredentials" style="border-radius:50px;" )
+				div( class="card-panel z-depth-0" )
+					div( class="" id="enterPresentUserBox" )
+						form( ng-model="changePass" name="changePass" ng-submit="checkPresentPass(changePass.presentPass)" )
+							div( class="card-panel row z-depth-0" )
+								div( class="input-field col l12" )
+									input( type="text" ng-model="presentPass" name="presentPass" pattern=".{5,12}" required)
+									label( for="presentPass" ) Enter Present Password
+								input( type="submit" class="btn grey darken-4" ng-disabled="changePass.$invalid" value="submit" )
+							div( class="card-panel z-depth-0" )
+								div(  )
+								span It is highly recommended that you save your credentials safe. If the credentials are lost, Only the web host admin can recover your password !
+					div( class="" id="enterNewUserBox" style="display:none;" )
+						form( ng-model='changePresentPassFrm' name="changePresentPassFrm" ng-submit="changePresentPass(changePresentPassFrm.username,changePresentPassFrm.password1,changePresentPassFrm.password2)" )
+							div( class="card-panel z-depth-0" )
+								div( class="input-field col l12" )
+									input( type="text" pattern="[A-Za-z0-9]{5,16}" ng-model="username" name="username" required )
+									label( for="username" ) Enter new Username
+									span( class="helper-text" ) Username should be 5 to 16 characters long
+								div( class="input-field col l12" )
+									input( type="password" ng-model="password1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" name="password1" required )
+									label( for="password1" ) Enter the Password
+								div( class="input-field col l12" )
+									input( type="password" ng-model="password2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}" name="password2" required )
+									label( for="password2" ) Re enter the Password
+									span( class="helper-text" ) Password must contain at least one number and one uppercase and lowercase letter, 8 to 16 characters long
+								input( type="submit" class="btn red" ng-disabled="changePresentPassFrm.$invalid" value="change details" )
+			div( class="modal" id="alumniIDDetailModal" )
+				div( class="card-panel z-depth-0" )
+					table( ng-repeat="data in alumniIDBind" class="centered" )
+						tr
+							td Name
+							td {{ data.name }}
+						tr
+							td Type of Alumni
+							td {{ data.typeOfAlumni }}
+						tr
+							td Occupation
+							td {{ data.occupation }}
+						tr
+							td Designation
+							td {{ data.designation }}
+						tr
+							td Address
+							td {{ data.address }}
+						tr
+							td
+							td 
+								a( href="" class="btn-floating grey darken-4" ng-click="printDiv()" )
+									i( class="material-icons" ) local_printshop
+			div( class="modal" id="rohaManageModal" )
+				div( class="card-panel z-depth-0 center-align" )
+					form( name="editROHacademics" ng-model="editROHacademics" ng-submit="editROHA(editROHacademics.editRohaID,editROHacademics.editROHName,editROHacademics.editROHEvent,editROHacademics.editROHYear,editROHacademics.editROHLevel)" )
+						input( type="text" style="display:none" ng-model="editRohaID" name="editRohaID" )
+						div( class="input-field col l12" )
+							input( type="text" name="editROHName" pattern="[A-Za-z' ]*" placeholder="" ng-model="editROHName" required )
+							label( for="ROHName" ) Enter the name
+						div( class="input-field col l12" )
+							input( type="text" name="editROHEvent" pattern="[A-Za-z ]*" placeholder="" ng-model="editROHEvent" required )
+							label( for="ROHName" ) Enter the Course
+						div( class="input-field col l12" )
+							input( type="number" min="1980" ng-max="{{ alumniYear }}" name="editROHYear" placeholder="" ng-model="editROHYear" required )
+							label( for="ROHName" ) Enter the Year
+						div( class="input-field col l12" )
+							input( type="text" name="editROHLevel" pattern="[A-Za-z0-9 ]*" placeholder="" ng-model="editROHLevel" required )
+							label( for="ROHName" ) Enter the Level of rank
+						input( type="submit" class="btn left blue-grey darken-2" value="Edit Values" ng-disabled="editROHacademics.$invalid" )
+						a( href="" class="btn red darken-2" ng-click="deleteRoha(editROHacademics.editRohaID)" ) Delete Roll of Honor
+			div( class="modal" id="rohsManageModal" )
+				div( class="card-panel z-depth-0 center-align" )
+					form( name="editROHsports" ng-model="editROHsports" ng-submit="editROHS(editROHsports.editRohsID,editROHsports.editROHSName,editROHsports.editROHSEvent,editROHsports.editROHSYear,editROHsports.editROHSLevel)" )
+						input( type="text" style="display:none" ng-model="editRohsID" name="editRohsID" )
+						div( class="input-field col l12" )
+							input( type="text" name="editROHSName" pattern="[A-Za-z' ]*" placeholder="" ng-model="editROHSName" required )
+							label( for="ROHSName" ) Enter the name
+						div( class="input-field col l12" )
+							input( type="text" name="editROHSEvent" pattern="[A-Za-z ]*" placeholder="" ng-model="editROHSEvent" required )
+							label( for="ROHSName" ) Enter the Event
+						div( class="input-field col l12" )
+							input( type="number" min="1980" ng-max="{{ alumniYear }}" placeholder="" name="editROHSYear" ng-model="editROHSYear" required )
+							label( for="ROHNSame" ) Enter the Year
+							span( class="helper-text" ) Year should be between 1980 to Present year
+						div( class="input-field col l12" )
+							input( type="text" name="editROHSLevel" pattern="[A-Za-z ]*" placeholder="" ng-model="editROHSLevel" required )
+							label( for="ROHName" ) Enter the Level
+						input( type="submit" class="btn grey darken-2 left" value="Edit Values" ng-disabled="editROHsports.$invalid" )
+						a( href="" class="btn red darken-2" ng-click="deleteRohs(editROHsports.editRohsID)" ) Delete Roll of Honor

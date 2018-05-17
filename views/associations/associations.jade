@@ -1,0 +1,193 @@
+extends ../layout/layout
+
+block content
+	script( src="js/controllers/associations.js" )
+	div( ng-controller="associationsCtrl" )
+		div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+			div( id="preloader" )
+				div( id="loader" )
+		div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+			nav( class="z-depth-0 transparent center-align" )
+				div( style="height : inherit;"	 )
+					img( src="images/smclogo.png" class="left hide-on-med-and-down" style="height:inherit;" )
+					a( href="/" class="flow-text left hide-on-med-and-down" ) &nbsp;&nbsp; St. Mary's College
+					ul( id="choseAssoc" class="dropdown-content white" )
+						li( ng-repeat="assoc in assocIndex" )
+							a( href="" ng-click="getAssocDetails(assoc.nameInDb)" class="black-text" ) {{ assoc.name }}
+					ul( class="right hide-on-med-and-down" )
+						li
+							a( href="/departments" ) Departments
+						li
+							a( href="/facilities" ) Facilities
+						li( class="active" )
+							a( class="dropdown-trigger" href="" data-target="choseAssoc" style="bottom:0;" ) Service wings and associations
+								i( class="material-icons right" ) arrow_drop_down
+						li
+							a( href="/news" ) News and Events
+						li
+							a( href="/alumni" ) Alumni Association
+					a( href="/" class="flow-text hide-on-large-only" ) St.Mary's College
+					ul( id="slide-out" class="sidenav left-align" )
+						li( class="center-align" )
+							div( class="user-view" )
+								div( class="background" )
+									img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+								a( href="#!user" )
+									img( src="/images/smclogo.png" class="circle" )
+								a( href="#!name" )
+									span &nbsp;
+						div
+							li
+								a( href="/departments" )
+									i( class="material-icons" ) school
+									span Departments
+							li
+								a( href="/facilities" )
+									i( class="material-icons" ) library_books
+									span Facilities
+							li( class="active" )
+								a( href="/associations" )
+									i( class="material-icons" ) school
+									span Associations
+									a( href="" class="white" ng-repeat="assoc in assocIndex"  ng-click="getAssocDetails(assoc.nameInDb)" ) {{ assoc.name }}
+										i( class="material-icons grey-text text-lighten-2" ) chevron_right
+							li
+								a( href="/news" ) 
+									i( class="material-icons" ) book
+									span News and Events
+							li
+								a( href="/alumni" ) 
+									i( class="material-icons" ) person_pin
+									span Alumni Association
+					a( href="#" data-target="slide-out" class="sidenav-trigger" )
+						i( class="material-icons" ) menu
+		div( id="firstScreen" class="card-panel row" style="margin:0" )
+			div( class="col m5 s12 l4" )
+				div( class="collection z-depth-2 center-align" )
+					div( class="collection-item" )
+						img( src="images/smclogo.png" class="center" style="width:50%;" )
+					div( class="collection-item grey lighten-4" )
+						span( ) St. Mary's Departments
+					div( class="collection-item" )
+						span Any successful career starts with advanced higher education. At our university, you will have a deeper knowledge of the subjects that will be particularly useful when climbing the career ladder. St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.
+			div( class="col m7 s12 l8" id="rightInfo" )
+				div( class="container" )
+					ul( class="collection z-depth-2" )
+						li( class="collection-item grey lighten-4" ) Choose Associations here
+						a( href="" ng-repeat="assoc in assocIndex" class="collection-item grey-text text-darken-3" ng-click="getAssocDetails(assoc.nameInDb)" ) {{ assoc.name }}
+		div( id="mainPage" )
+			div( class="row card-panel z-depth-0" )
+				div( class="col l4 hide-on-med-and-down" )
+					div( id="scrollspyRef")
+						div( id="scrollspyContent" )
+							ul( class="section table-of-contents" )
+								li( class="baseScroll" )
+									a( href="#basicHolder" class="flow-text" ) Basic Information
+									br
+									br
+									br
+								li( class="facultyScroll" )
+									a( href="#facultyHolder" class="flow-text" ) Members Information
+									br
+									br
+									br
+								li( class="newsScroll" )
+									a( href="#newsHolder" class="flow-text" ng-init="scrollfnc();" ) News Information
+				div( class="col l8 m12 s12" )
+					div( class="section scrollspy baseScroll" id="basicHolder" )
+						div( class="collection z-depth-1" ng-repeat="data in basicDetails" )
+							div( class="collection-item grey lighten-4" ) 
+								span( style="font-weight:bold" ) {{ data.name }} Basic Information
+							div( class="collection-item" ) 
+								blockquote( class="blue-bquote" )
+									span {{ data.description }}
+					div( class="section scrollspy facultyScroll" id="facultyHolder" )
+						div( class="collection z-depth-1" )
+							div( class="collection-item grey lighten-4" )
+								span( style="font-weight:bold" ) Association Members Profile
+							div( class="collection-item" )
+								div( class="card-panel row z-depth-0" )
+									div( class="card-panel z-depth-2 center-align col l4 m6 s12 hoverable" style="padding:10px;height:310px;cursor:pointer" ng-repeat="data in membersList" )
+										img( class="responsive-img" style="height:160px;" ng-src="/serverImages/?img={{ data.image }}" )
+										div( class="collection" )
+											div( class="collection-item grey lighten-4" style="font-weight:bold" ) {{ data.name }}
+											div( class="collection-item" ) {{ data.designation }}
+					div( class="section scrollspy newsScroll" id="newsHolder" )
+						div( class="collection z-depth-1" )
+							div( class="collection-item grey lighten-4" style="font-weight:bold" )
+								span Association News
+							div( class="collection-item" )
+								nav( class="white z-depth-0" )
+									div( class="nav-wrapper" )
+										form
+											div( class="input-field" )
+												input( type="search" id="search" placeholder="Search Association news here" ng-model="searchNews" )
+												label( class="label-icon left" for="search" )
+													i( class="material-icons black-text" ) search
+												i( class="material-icons" ) close
+							div( class="collection-item center-align" ng-if="sn==0"  )
+								span No News Records Found
+						div( class="collection z-depth-1 hoverable" dir-paginate="news in newsList| itemsPerPage : 3 | filter : searchNews as sn" )
+							div( class="collection-item grey lighten-5" ) {{ news.title }}
+							div( class="collection-item" ) {{ news.description }}
+							div( class="collection-item right-align" )
+								a( href="#fullNewsModal" class="btn grey darken-4 modal-trigger" ng-click="showFullNews(news)" ) Read Full News
+						div( class="collection z-depth-1 center-align grey lighten-2" )
+							dir-pagination-controls( max-size="5" boundary-links="true" direction-links="true" auto-hide="true" )
+		div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+			div( class="container" )
+				div( class="row" )
+					div( class="col l6 s12" )
+						h5( class="white-text" ) St. Mary's Insights
+						p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+						p
+							a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+								i( class="social fa fa-facebook" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+								i( class="social fa fa-google-plus" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+								i( class="social fa fa-instagram" )
+							&nbsp;
+							&nbsp;
+							a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+								i( class="social fa fa-map" )
+					div( class="col l2 s12" )
+					div( class="col l4 s12" )
+						h5 Useful Links
+						ul
+							li( class="" )
+								a( href="/departments" class="grey-text text-lighten-3" ) Departments
+							li( class="" )
+								a( href="/associations" class="grey-text text-lighten-3" ) Service wings
+							li( class="" )
+								a( href="/news" class="grey-text text-lighten-3" ) News and events
+							li( class="" )
+								a( href="/facilities" class="grey-text text-lighten-3" ) College Facilities
+							li( class="" )
+								a( href="/alumni" class="grey-text text-lighten-3" ) Alumni association
+							li
+								a( href="/login" class="grey-text" ) Login
+			div( class="footer-copyright blue-grey darken-4" )
+				div( class="container left-align" )
+					span Copyright &copy; St. Mary's Shirva
+			div( id="fullNewsModal" class="modal white" )
+				div( class="z-depth-0" )
+					div( class="collection black-text" ng-repeat="data in ModalNews" style="margin:0;border:0" )
+						div( id="main" )
+							div( class="collection-item grey lighten-4" )
+								span {{ data.title }}
+							div( class="collection-item" )
+								span( class="truncate" ) {{ data.description }}
+							div( class="collection-item" )
+								a( href="" class='btn grey darken-4' ng-click="showImg()" ) Show Images
+						div( id="pics" class="center-align" style="display:none;" )
+							div( class="collection-item right-align" style="padding:10px" )
+								a( href="" class="black-text" )
+									i( class="material-icons" ng-click="closeImg()" ) close
+							img( class="responsive-img" ng-repeat="pic in data.photos" ng-src="/serverImages/?img={{ pic }}" )
+							div( class="collection-item center-align grey lighten-4" ng-if="data.photos.length==0" )
+								span( class="flow-text" ) No images found with this news

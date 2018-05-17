@@ -1,0 +1,300 @@
+extends ../../layout/layout
+
+block content
+    script( src="/js/controllers/admin.js" )
+    div( ng-controller="adminAssociationCtrl" )
+        div( class="center-align hide-on-large-only" )
+            div( class="container" )
+                div( class="card-panel z-depth-0" )
+                    div( class="card-panel" )
+                        button( class="btn-floating right grey darken-4" )
+                            i( class="material-icons" ) 
+                        div( class="container" )
+                            div( class="card-panel z-depth-0" )
+                                img( class="responsive-img" style="height:100px" src="../images/smclogo.png" )
+                        span( class="flow-text" ) This Layout is Not Supported to be Viewable in Phones and Tablet. Please use Desktop instead!
+        div( class="hide-on-med-and-down" )
+            div( class="card-panel valign-wrapper center-align" id="preloaderScreen" style="z-index:100;position:fixed;width:100%;height:100%;margin:0;" )
+                div( id="preloader" )
+                    div( id="loader" )
+            div( class="card-panel blue-grey darken-4" style="border-bottom : 10px solid #343F4B; margin:0;")
+                nav( class="z-depth-0 transparent" )
+                    a( href="/admin" class="flow-text" ) St. Mary's Admin | Associations
+                    ul( id="slide-out" class="sidenav" )
+                        li
+                            div( class="user-view" )
+                                div( class="background" )
+                                    img( src="/images/SlideImg/1.jpg" class="responsive-img" style="opacity:0.5" )
+                                a( href="#!user" )
+                                    img( src="/images/smclogo.png" class="circle" )
+                                a( href="#!name" )
+                                    span( class="black-text name" ) &nbsp;
+                        li
+                            a( href="" ng-click="redirectTo('manageDepts')" )
+                                i( class="material-icons" ) school
+                                span Manage Departments
+                        li
+                            a( href="" ng-click="redirectTo('manageFacilities')" )
+                                i( class="material-icons" ) library_books
+                                span Manage Fecilities
+                        li( class="active" )
+                            a( href="" ng-click="redirectTo('manageAssociations')" )
+                                i( class="material-icons" ) assignment_ind
+                                span Manage Associations
+                        li
+                            a( href="" ng-click="redirectTo('manageNews')" )
+                                i( class="material-icons" ) book
+                                span Update News
+                        li
+                            a( href="" ng-click="redirectTo('manageAlumni')" )
+                                i( class="material-icons" ) person_pin
+                                span Update Alumni
+                        li( class="divider" )
+                        li
+                            a( href="/admin" class="btn grey darken-1" ) Get to the dashboard
+                    a( href="#" data-target="slide-out" class="sidenav-trigger show-on-small show-on-medium-and-up" )
+                        i( class="material-icons" ) menu 
+            div( class="row" )
+                input( type="text" ng-model="modalBind" name="modalBind" style="display:none;" )
+                div( class="card-panel z-depth-0 col l4" )
+                    div( class="collection z-depth-1" )
+                        form( ng-model="addAssoc" name="addAssoc" ng-submit="createAssociation(addAssoc.assocName,addAssoc.assocDesc)" )
+                            div( class="collection-item grey lighten-4" )
+                                span Add Association here
+                            div( class="collection-item card-panel z-depth-0 row" )
+                                div( class="input-field col l12" )
+                                    input( type="text" pattern="[A-Za-z0-9()'- ]*" placeholder="" ng-model="assocName" name="assocName" required )
+                                    label( for="assocName" ) Enter Association Name
+                                    span( class="helper-text" ) Association Name cant be edited !
+                                div( class="input-field col l12" )
+                                    textarea( id="textarea1" class="materialize-textarea" placeholder="" ng-model="assocDesc" name="assocDesc" pattern="[A-Za-z0-9()-/.,' ]*" maxlength="1500" required )
+                                    label( for="textarea1" ) Enter Association Description
+                                    span( class="helper-text" ) Special Characters are not allowed !
+                            div( class="collection-item hoverable center-align" )
+                                input( type="submit" class="btn blue darken-4" value="Add Association" ng-disabled="addAssoc.$invalid" )
+                    div( class="collection z-depth-1" )
+                        div( class="collection-item grey lighten-4" ) Added Asssociations
+                        div( class="collection-item" )
+                            nav( class="white z-depth-0" )
+                                div( class="nav-wrapper" )
+                                    form
+                                        div( class="input-field" )
+                                            input( type="search" id="search" placeholder="Search Association news here" ng-model="searchAssoc" )
+                                            label( class="label-icon left" for="search" )
+                                                i( class="material-icons black-text" ) search
+                                            i( class="material-icons" ) close
+                        a( class="collection-item black-text" href="" ng-repeat="data in assoclist | filter : searchAssoc as sa" ng-click="showSelectedAssoc(data)" ) {{ data.name }}
+                        div( class="collection-item center-align grey lighten-4" ng-if="sa==0" )
+                            span No Associations Found
+                div( class="col l8" )
+                    div( class="card-panel z-depth-0 col l12" )
+                        div( class="card-panel z-depth-0 center-align noAssocAdded" )
+                            div( class="container" )
+                                span( class="flow-text" ) Click on the Listed Association to Edit the Departments. You can Create an association By Entering the Name and Description in the Adjuscent column.
+                                br
+                                span( class="flow-text" ) Then click&nbsp;&nbsp; 
+                                button( class="btn grey darken-4 pulse" ) Add Association
+                                span( class="flow-text" ) &nbsp;&nbsp;To add the Department
+                    div( class="collection z-depth-1 basicHide" ng-repeat="data in basicAssoc" )
+                        div( class="collection-item grey lighten-4" ) 
+                            span {{ data.name }}
+                        div( class="collection-item" )
+                            blockquote( class="blue-bquote" )
+                                span {{ data.description }}
+                        div( class="collection-item grey lighten-5 right-align" )
+                            a( href="#editBasicAssoc" class="modal-trigger btn blue darken-4 hoverable" ng-click="editAssocBind(data)" ) Edit Basic Info
+                                i( class="material-icons right" ) edit
+                        div( class="collection-item right-align" )
+                            a( href="#deleteAssoc" class="modal-trigger btn red darken-1 hoverable" ng-click="bindData(data.nameInDb)" ) Delete Association
+                                i( class="material-icons right" ) delete
+                            br
+                            label The association will be deleted permanently
+                    div( class="card-panel z-depth-0 col l12 facultyHide" style="display:none;" ) 
+                        div( class="collection z-depth-1" )
+                            div( class="collection-item grey lighten-4" )
+                                span Core Committee
+                            div( class="collection-item" )
+                                ul( class="collapsible" )
+                                    li
+                                        div( class="collapsible-header" )
+                                            i( class="material-icons left" ) add
+                                            span Add a member to core committee
+                                        div( class="collapsible-body row" )
+                                            form( ng-model="addAssocMemFrm" name="addAssocMemFrm" ng-submit="addAssocMember(addAssocMemFrm.assocPeopleName,addAssocMemFrm.assocPeopleDesig)" )
+                                                div( class="input-field col l12 s12 m12" )
+                                                    input( type="text" name="assocPeopleName" placeholder="" ng-model="assocPeopleName" required pattern="[A-Za-z(),.': ]*" )
+                                                    label( for="assocPeopleName" ) Enter the name
+                                                div( class="input-field col l12" )
+                                                    input( type="text" name="assocPeopleDesig" placeholder="" ng-model="assocPeopleDesig" required pattern="[A-Za-z,.- ]*" )
+                                                    label( for="assocPeopleDesig" ) Enter the designation
+                                                    span( class="helper-text" ) Ex. Principal, Chairperson, Asst. Officer
+                                                 input( type="submit" class="btn grey darken-4" ng-disabled="addAssocMemFrm.$invalid" value="Add member" )
+                            div( class="collection-item" )
+                                nav( class="white z-depth-0" )
+                                    div( class="nav-wrapper" )
+                                        form
+                                            div( class="input-field" )
+                                                input( type="search" id="search" placeholder="Search association core comitte here" ng-model="searchMember" )
+                                                label( class="label-icon left" for="search" )
+                                                    i( class="material-icons black-text" ) search
+                                                i( class="material-icons" ) close
+                            div( class="collection-item center-align grey lighten-4" ng-if="sm==0" )
+                                span No Member records found!
+                            a( class="collection-item black-text modal-trigger" ng-repeat="data in assocMembers | filter : searchMember as sm" href="#editMembers" ng-click="bindMember(data)" )
+                                span {{ data.name }}
+                                br
+                                span( class="grey-text" ) {{ data.designation }}
+                    div( class="card-panel z-depth-0 col l12 newsHide" style="display:none;" )
+                        div( class="collection z-depth-1" )
+                            div( class="collection-item grey lighten-4" )
+                                span Association News
+                            div( class="collection-item" )
+                                ul( class="collapsible" )
+                                    li
+                                        div( class="collapsible-header" )
+                                            i( class="material-icons left" ) add
+                                            span Add a news to association
+                                        div( class="collapsible-body row" )
+                                            form( ng-model="addAssocNewsFrm" name="addAssocNewsFrm" ng-submit="addAssocNews(addAssocNewsFrm.assocNewsTitle,addAssocNewsFrm.assocNewsDesc)" )
+                                                div( class="input-field col l12 s12 m12" )
+                                                    input( type="text" placeholder="" name="assocNewsTitle" ng-model="assocNewsTitle" required pattern="[A-Za-z0-9()-/.,;' ]*" )
+                                                    label( for="assocPeopleName" ) Enter the title
+                                                div( class="input-field col l12" )
+                                                    input( type="text" placeholder="" name="assocNewsDesc" ng-model="assocNewsDesc" required pattern="[A-Za-z0-9()-/.,;' ]*" )
+                                                    label( for="assocPeopleDesig" ) Enter the description
+                                                input( type="submit" class="btn grey darken-4" ng-disabled="addAssocNewsFrm.$invalid" value="Add News" )
+                            div( class="collection-item" )
+                                nav( class="white z-depth-0" )
+                                    div( class="nav-wrapper" )
+                                        form
+                                            div( class="input-field" )
+                                                input( type="search" id="search" placeholder="Search association news here" ng-model="searchNews" )
+                                                label( class="label-icon left" for="search" )
+                                                    i( class="material-icons black-text" ) search
+                                                i( class="material-icons" ) close
+                            div( class="collection-item center-align grey lighten-4" ng-if="sn==0" )
+                                span There are no records found !
+                        div( dir-paginate="news in newsList | itemsPerPage : 3 | filter : searchNews as sn" )
+                            div( class="collection z-depth-1 hoverable" )
+                                div( class="collection-item grey lighten-4   hoverable" ) 
+                                    span {{ news.title }} 
+                                div( class="collection-item" )
+                                    span {{ news.description }}
+                                div( class="collection-item right-align grey lighten-5" )
+                                    a( href="" class="btn-floating right red hoverable" style="margin:5px" ng-click="deleteAssocNews(news._id)" ) 
+                                        i( class="material-icons" ) close 
+                                    a( href="#editNews" class="btn-floating right blue hoverable modal-trigger" style="margin:5px" ng-click="bindEditNews(news)" )
+                                        i( class="material-icons" ) edit
+                                    a( href="#newsPhotoDiv" class="btn-floating green hoverable modal-trigger" style="margin:5px" ng-click="showPics(news.photos,news._id)" )
+                                        i( class="material-icons" ) photo
+                        div( class="collection grey lighten-2 z-depth-1 center-align" ng-if="sn!=0" )
+                            dir-pagination-controls( max-size="5" boundary-links="true" direction-links="true" )
+            div( id="footer" class="grey darken-3 row page-footer" style="margin:0" )
+                div( class="container" )
+                    div( class="row" )
+                        div( class="col l6 s12" )
+                            h5( class="white-text" ) St. Mary's Insights
+                            p( class="grey-text text-lighten-4" ) St. Mary’s College, Shirva strives to train rural youth to meet global challenges through effective classroom lessons coupled with capability building programmes.content.
+                            p
+                                a( href="" class="blue tooltipped btn-floating btn-large darken-3 waves-effect" data-position="top" data-tooltip="Facebook" )
+                                    i( class="social fa fa-facebook" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="red tooltipped btn-floating btn-large waves-effect"  data-position="top" data-tooltip="Google Plus" )
+                                    i( class="social fa fa-google-plus" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="pink btn-floating btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Instagram" )
+                                    i( class="social fa fa-instagram" )
+                                &nbsp;
+                                &nbsp;
+                                a( href="" class="green btn-floating darken-2 btn-large waves-effect tooltipped"  data-position="top" data-tooltip="Get Directions" )
+                                    i( class="social fa fa-map" )
+                        div( class="col l2 s12" )
+                        div( class="col l4 s12" )
+                            h5 Useful Links
+                            ul
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageDepts')" class="grey-text text-lighten-3" ) Manage Departments
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageAssociations')" class="grey-text text-lighten-3" ) Manage Service wings
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageNews')" class="grey-text text-lighten-3" ) Manage News and events
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageFacilities')" class="grey-text text-lighten-3" ) Manage College Facilities
+                                li( class="" )
+                                    a( href="" ng-click="redirectTo('manageAlumni')" class="grey-text text-lighten-3" ) Manage Alumni association
+                                li( class="" )
+                                    a( href="/" class="grey-text text-lighten-3" ) Home
+                div( class="footer-copyright blue-grey darken-4" )
+                    div( class="container left-align" )
+                        span Copyright &copy; St. Mary's Shirva
+            div( class="modal white" id="editNews" style="border:0" )
+                div( class="collection z-depth-0" )
+                    div( class="collection-item" )
+                        form( name="editNews" ng-model="editNews" ng-submit="editGenNews(editNews.edittitle,editNews.editdescription,editNews.editid)" )
+                            input( type="text" name="editid" ng-model="editid" style="display:none" )
+                            div( class="input-field col l12" )
+                                input( type="text" name="edittitle" placeholder="" ng-model="edittitle" pattern="[A-Za-z0-9()-/.,;' ]*" required )
+                                label( for="title" ) News Title
+                            div( class="input-field col l12" )
+                                textarea( class="materialize-textarea" placeholder=""  name="editdescription" pattern="[A-Za-z0-9()-/.,;' ]*" ng-model="editdescription" required )
+                                label( for="description" ) News Description
+                            div( class="z-depth-0 center-align" )
+                                input( type="submit" class="btn blue darken-4" value="edit news" ng-disabled="editNews.$invalid" )
+            div( class="modal white modal-fixed-footer" id="newsPhotoDiv" )
+                div( class="modal-content" )
+                    div( class="row z-depth-0" )
+                        div( class="col l4 m6 s12 center-align" ng-repeat="img in newsModalPhotos" )
+                            img( class="responsive-img z-depth-1 hoverable" style="height:100px" ng-src="/serverImages/?img={{ img }}" )
+                            a( href="" class="btn red hoverable" ng-click="deleteNewsImage(img)" ) Delete
+                            br
+                            br
+                    div( class="card-panel center-align z-depth-0" style="display:none;" id="noPicAcknowledgement" )
+                        span No Images Are found with this news!
+                div( class="modal-footer" )
+                    a( class="btn waves-light grey darken-4 hoverable" ngf-select="upload($file)" ng-model="file" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="300" ngf-resize="{width: 400, height: 400}" ) Upload Image to this News
+                        i( class="material-icons right" ) file_upload
+            div( class="modal" id="editBasicAssoc" )
+                div( class="collection z-depth-0" )
+                    form( ng-model="editAssoc" name="editAssoc" ng-submit="editAssociation(editAssoc.editAssocName,editAssoc.editAssocDesc)" )
+                        div( class="collection-item grey lighten-4" )
+                            span Edit Association here!
+                        div( class="collection-item card-panel z-depth-0 row" )
+                            div( class="input-field col l12" )
+                                input( type="text" disabled pattern="[A-Za-z()., ]*" ng-model="editAssocName" placeholder="" name="editAssocName" required disabled+ )
+                                label( for="assocName" ) Enter Association Name
+                                span( class="helper-text" ) Association Name cant be edited !
+                            div( class="input-field col l12" )
+                                textarea( id="textarea1" class="materialize-textarea" placeholder="" ng-model="editAssocDesc" name="editAssocDesc" pattern="[A-Za-z0-9()-/.,;' ]*" required )
+                                label( for="textarea1" ) Enter Association Description
+                        div( class="collection-item hoverable center-align" )
+                            input( type="submit" class="btn grey darken-4" value="Edit Association" ng-disabled="editAssoc.$invalid" )
+            div( class="modal dismissable" id="deleteAssoc" )
+                div( class="card-panel z-depth-0 center-align" )
+                    span Are you sure want to delete {{ modalBind }} Association ?
+                    br
+                    span( class="grey-text" ) All the data including the Core committee information and Association news will be deleted !
+                    br
+                    br
+                    a( href="" class="btn red darken-1 hoverable" ng-click="deleteAssoc()" ) Yes, Delete The Association
+            div( id="editMembers" class="modal" )
+                div( class="white row card-panel z-depth-0" ng-repeat="data in boundData" )
+                    input( type="text" name="boundid" ng-model="boundid" style="display:none" )
+                    div( class="collection col l4" )
+                        div( class="collection-item" )
+                            img( ng-src="/serverImages/?img={{ data.image }}" class="responsive-img" )
+                        div( class="collection-item center-align" )
+                            button( class="btn-floating waves-light grey darken-4" ngf-select="uploadMember($file,data._id)" ng-model="file" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" )
+                                i( class="material-icons" ) file_upload
+                    div( class="collection col l8 row right-align" )
+                        form( ng-model="editMemberFrm" name="editMemberFrm" ng-submit="editMember(data._id,editMemberFrm.editMemberName,editMemberFrm.editMemberDesig)" )
+                            input( name="valuetoBind" ng-model="valuetoBind" type="text" style="display:none")
+                            div( class="input-field col l12")
+                                input( type="text" ng-model="editMemberName" placeholder="" name="editMemberName" required pattern="[A-Za-z. ]*" )
+                                label( for="editMemberName" ) Enter member name
+                            div( class="input-field col l12" )
+                                input( type="text" ng-model="editMemberDesig" placeholder="" name="editMemberDesig" required pattern="[A-Za-z,. ]*" )
+                                label( for="editMemberDesig" ) Enter member designation
+                            input( type="submit" class="btn grey darken-4" ng-disabled="editMemberFrm.$invalid" value="Edit Member" )
+                            a( href="" class="btn red darken-1 left" ng-click="deleteMember(data._id)" ) Delete Member
