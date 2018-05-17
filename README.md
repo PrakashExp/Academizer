@@ -1,5 +1,7 @@
 # **Smc Outlook** 
 
+> St.Mary's College - SMC
+
 >  MEAN stack based project to manage the entire college data.
 >  A full stack Javascript Project.
 > - M - Mongodb 
