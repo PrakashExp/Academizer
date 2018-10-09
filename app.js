@@ -13,12 +13,12 @@ var routes = require("./routes/routes");
 var app = express();
 
 //Connecting to the Database
-var db = mongoose.createConnection("mongodb://localhost/mainDb", {
+var db = mongoose.createConnection("mongodb://mongo:27017/mainDb", {
   useMongoClient: true
 });
 
 db.once("open", function() {
-  console.log("Database is Open in 27017");
+  console.log("Database is Open in");
 });
 
 //Setting View and Dependencies
@@ -37,7 +37,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: new MongoStore({
-      url: "mongodb://localhost:27017/sessions",
+      url: "mongodb://mongo:27017/sessions",
       ttl: 60 * 60 * 2
     }), //2 Hours Time to live
     cookie: { secure: false }
