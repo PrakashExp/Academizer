@@ -1,19 +1,41 @@
 # Academizer - College Manager
 
-MEAN stack based project to manage the entire college data. (SMC - St. Mary's college, developed for my college ) A full stack Javascript Project. My Undergraduate course project of 2018, using Mongodb, ExpressJS, AngularJS, NodeJS Stack.
+MEAN stack based project to manage the entire college data. My Undergraduate course project of 2018, using Mongodb, ExpressJS, AngularJS, NodeJS Stack. The project was done in consideration to St. Mary's which is my undergraduate degree college as my Undergraduate degree program project. The website can do almost all things that a college website would want in their website.
 
-### Introduction
+### Tools
 
-This is a MEAN stack based project that adds Departments, Adds upcoming events of the college, Tracks the alumni information and much more. The project was done in consideration to St. Mary's College shirva which is my undergraduate degree college as my Undergraduate degree project. The website can do almost all things that a college website want in their website.
+```
+Mongodb - 2.x.x
+Node - 8.x.x
+AngularJS - 1.x.x
+```
 
 ### Features
 
-1.  It is a Session based project by express-session and mongoose-session. Contains an admin login panel where admin can login and make changes to the portal.
-2.  Follows MVC layout (Models Views and Controllers). So the code is easy to understand and easy to modify.
-3.  It enables the admin to add the departments of the college, and manage the lecturers,manage their profile under respective departments. And also the department news and department events can be added and managed in this section.
-4.  If any person who studied in the college wants to be an alumni and contribute to the growth of the college, he/she can go to the alumni section and send a request to be the alumni of the college. And then the admin gets the chance to accept or reject the request. Based on this action mail will be sent to the bearer.
-5.  All the requests gets routed to the respective controllers. and if there are invalid routes the server throws an error which displays an error message in the page saying 404 not found. So all the endpoints are sealed.
+1. **Session Based** - It is a Session based project by express-session and mongoose-session.
+2. **Secured** - Contains an admin login panel where admin can login and make changes to the portal.
+3. **Easy maintenance** - Follows MVC layout (Models Views and Controllers) for better .
+4. **Centralized Authority** - Only admin is allowed to make changes to the portal.
+5. **Flexible** - Admin gets a request from any person who wants to be an alumni. Admin can accept or reject the person.
+6. **Efficient** - Sealed Endpoints. When routing to a port that doesn't exists, the error page is shown.
 
-### Necessary Information
+### How to run
 
-The default username is 'admin' and the default password is 'Admin123'
+- Install Docker from the following URL - [click here](https://www.docker.com/products/docker-desktop)
+
+- Install docker-compose [click here](https://docs.docker.com/compose/install/#install-compose)
+
+- Clone this repository
+
+- Locate the project folder in terminal
+
+- run `docker compose up` in the terminal.
+
+- Then locate to the address http://localhost/
+
+- That's it :)
+
+### Defaults
+
+Username : `admin`
+Password; `Admin123`
