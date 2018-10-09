@@ -21,6 +21,7 @@ AngularJS - 1.x.x
 
 ### How to run
 
+- Install docker [click here](https://docs.docker.com/install/)
 - Install docker-compose [click here](https://docs.docker.com/compose/install/#install-compose)
 - Clone this repository
 - Locate the project folder in terminal
