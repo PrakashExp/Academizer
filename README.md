@@ -13,15 +13,10 @@ AngularJS - 1.x.x
 ### Features
 
 1. **Session Based** - It is a Session based project by express-session and mongoose-session.
-
 2. **Secured** - Contains an admin login panel where admin can login and make changes to the portal.
-
 3. **Easy maintenance** - Follows MVC layout (Models Views and Controllers) for better .
-
 4. **Centralized Authority** - Only admin is allowed to make changes to the portal.
-
 5. **Flexible** - Admin gets a request from any person who wants to be an alumni. Admin can accept or reject the person.
-
 6. **Efficient** - Sealed Endpoints. When routing to a port that doesn't exists, the error page is shown.
 
 ### How to run
