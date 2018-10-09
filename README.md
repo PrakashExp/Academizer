@@ -1,6 +1,6 @@
 # Academizer - College Manager
 
-MEAN stack based project to manage the entire college data. My Undergraduate course project of 2018, using Mongodb, ExpressJS, AngularJS, NodeJS Stack. The project was done in consideration to St. Mary's which is my undergraduate degree college as my Undergraduate degree program project. The website can do almost all things that a college website would want in their website.
+MEAN stack based project to manage the entire college data. My Undergraduate course project of 2018, using Mongodb, ExpressJS, AngularJS, NodeJS Stack. The project was done in consideration to St. Mary's which is my undergraduate degree college as my Undergraduate degree program project. So all the requirements are based on my college.The website can do almost all things that a college website would want in their website.
 
 ### Tools
 
@@ -22,17 +22,11 @@ AngularJS - 1.x.x
 ### How to run
 
 - Install Docker from the following URL - [click here](https://www.docker.com/products/docker-desktop)
-
 - Install docker-compose [click here](https://docs.docker.com/compose/install/#install-compose)
-
 - Clone this repository
-
 - Locate the project folder in terminal
-
-- run `docker-compose up` in the terminal.
-
+- run `docker compose up` in the terminal.
 - Then locate to the address http://localhost/
-
 - That's it :)
 
 ### Defaults
