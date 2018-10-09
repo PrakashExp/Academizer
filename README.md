@@ -22,6 +22,7 @@ AngularJS - 1.x.x
 ### How to run
 
 - Install Docker from the following URL - [click here](https://www.docker.com/products/docker-desktop)
+  <<<<<<< HEAD
 
 - Install docker-compose [click here](https://docs.docker.com/compose/install/#install-compose)
 
@@ -33,6 +34,14 @@ AngularJS - 1.x.x
 
 - Then locate to the address http://localhost/
 
+=======
+
+- Install docker-compose [click here](https://docs.docker.com/compose/install/#install-compose)
+- Clone this repository
+- Locate the project folder in terminal
+- run `docker compose up` in the terminal.
+- Then locate to the address http://localhost/
+  > > > > > > > bc5be36fb9f39db191315744fa05b126569ea0a5
 - That's it :)
 
 ### Defaults
