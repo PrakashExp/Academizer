@@ -1,6 +1,6 @@
 # Academizer - College Manager
 
-MEAN stack based project to manage the entire college data. My Undergraduate course project of 2018, using Mongodb, ExpressJS, AngularJS, NodeJS Stack. The project was done in consideration to St. Mary's which is my undergraduate degree college as my Undergraduate degree program project. The website can do almost all things that a college website would want in their website.
+MEAN stack based project to manage the entire college data. My Undergraduate course project of 2018, using Mongodb, ExpressJS, AngularJS, NodeJS Stack. The project was done in consideration to St. Mary's which is my undergraduate degree college as my Undergraduate degree program project. So all the requirements are based on my college.The website can do almost all things that a college website would want in their website.
 
 ### Tools
 
