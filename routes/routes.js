@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 const admin = require("../controllers/LoginController");
@@ -29,19 +29,27 @@ router.post("/editROHS", admin.editROHS);
 router.post("/deleteRohs", admin.deleteRohs);
 
 //Normal Renders
-router.get("/",maintenance, clientRenderCtrl.getHome);
-router.get("/departments",maintenance, clientRenderCtrl.getDepartments);
-router.get("/facilities",maintenance, clientRenderCtrl.getFacilities);
-router.get("/associations",maintenance, clientRenderCtrl.getAssociations);
-router.get("/news",maintenance, clientRenderCtrl.getNews);
+router.get("/", maintenance, clientRenderCtrl.getHome);
+router.get("/departments", maintenance, clientRenderCtrl.getDepartments);
+router.get("/facilities", maintenance, clientRenderCtrl.getFacilities);
+router.get("/associations", maintenance, clientRenderCtrl.getAssociations);
+router.get("/news", maintenance, clientRenderCtrl.getNews);
 router.get("/alumni", maintenance, clientRenderCtrl.getAlumni);
-router.get("/login",maintenance, clientRenderCtrl.getLogin);
+router.get("/login", maintenance, clientRenderCtrl.getLogin);
 
 //Admin Renders
 router.get("/admin", authenticate, adminRenderCtrl.getAdmin);
 router.get("/admin/ManageDepts", authenticate, adminRenderCtrl.adminDept);
-router.get("/admin/ManageFacilities", authenticate, adminRenderCtrl.adminFecilities);
-router.get("/admin/ManageAssociations", authenticate, adminRenderCtrl.adminAssociations);
+router.get(
+  "/admin/ManageFacilities",
+  authenticate,
+  adminRenderCtrl.adminFecilities
+);
+router.get(
+  "/admin/ManageAssociations",
+  authenticate,
+  adminRenderCtrl.adminAssociations
+);
 router.get("/admin/ManageNews", authenticate, adminRenderCtrl.adminNews);
 router.get("/admin/ManageAlumni", authenticate, adminRenderCtrl.adminAlumni);
 
@@ -56,7 +64,7 @@ router.post("/editSelectedDept", department.editSelectedDept);
 router.post("/addFaculty", department.addFaculty);
 router.post("/getFacultyInfo", department.getFaculty);
 router.post("/deleteFaculty", department.deleteFaculty);
-router.post("/updateFaculty" ,department.updateFaculty);
+router.post("/updateFaculty", department.updateFaculty);
 router.post("/addAchievement", department.addAchievement);
 router.post("/deleteAchievement", department.deleteAchievement);
 router.post("/uploadFacultyImg", department.uploadFacultyImg);

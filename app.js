@@ -1,23 +1,23 @@
-var express = require("express");
-var path = require("path");
-var logger = require("morgan");
-var mongoose = require("mongoose");
+const express = require("express");
+const path = require("path");
+const logger = require("morgan");
+const mongoose = require("mongoose");
 const multer = require("multer");
-var cookieParser = require("cookie-parser");
-var bodyParser = require("body-parser");
-var session = require("express-session");
-var MongoStore = require("connect-mongo")(session);
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 
-var routes = require("./routes/routes");
+const routes = require("./routes/routes");
 
-var app = express();
+const app = express();
 
 //Connecting to the Database
-var db = mongoose.createConnection("mongodb://mongo:27017/mainDb", {
+const db = mongoose.createConnection("mongodb://mongo:27017/mainDb", {
   useMongoClient: true
 });
 
-db.once("open", function() {
+db.once("open", () => {
   console.log("Database is Open in");
 });
 
@@ -48,13 +48,13 @@ app.use(
 app.use("/", routes);
 
 //Error Handlers
-app.use(function(req, res, next) {
-  var err = new Error("Not Found");
+app.use((req, res, next) => {
+  const err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
 
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
