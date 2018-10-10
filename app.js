@@ -6,13 +6,14 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+require("dotenv").config();
 
 const routes = require("./routes/routes");
 
 const app = express();
 
 //Connecting to the Database
-const db = mongoose.createConnection("mongodb://mongo:27017/mainDb", {
+const db = mongoose.createConnection(process.env.MONGO_URL, {
   useMongoClient: true
 });
 
@@ -22,7 +23,7 @@ db.once("open", () => {
 
 //Setting View and Dependencies
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+app.set("view engine", "pug");
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,9 +37,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: new MongoStore({
-      url: "mongodb://mongo:27017/sessions",
+      url: process.env.MONGO_SESSION,
       ttl: 60 * 60 * 2
-    }), //2 Hours Time to live
+    }), //2 Hours Time to live for session
     cookie: { secure: false }
   })
 );

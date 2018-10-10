@@ -182,9 +182,6 @@ var AdminStuff = {
     var promise = newFaculty.save(function(err) {
       if (err) {
         throw err;
-        /*res.status(400).send({
-                    message : "There was an Error!"
-                });*/
       } else {
         res.status(200).send({
           message: "Member " + name + " Successfully Added"
