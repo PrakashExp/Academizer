@@ -18,7 +18,7 @@ const db = mongoose.createConnection(process.env.MONGO_URL, {
 });
 
 db.once("open", () => {
-  console.log("Database is Open in");
+  console.log("Database is connected");
 });
 
 //Setting View and Dependencies
@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //Setting the Session in Mongo Store
 app.use(
   session({
-    secret: "hello",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     store: new MongoStore({
