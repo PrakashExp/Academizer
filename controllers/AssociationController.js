@@ -8,7 +8,7 @@ const path = require("path");
 const AssocSchema = require("../models/index");
 
 //Setting Uploading Configuration
-const upload = require("../config/multerConfig");
+const upload = require("../config/multer-config");
 
 var AdminStuff = {
   createAssoc: function(req, res, next) {

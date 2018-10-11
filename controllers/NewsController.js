@@ -6,7 +6,7 @@ const path = require("path");
 //Setting the Schema and Importing the Models
 const NewsSchema = require("../models/index");
 
-const upload = require("../config/multerConfig");
+const upload = require("../config/multer-config");
 
 var newsStuff = {
   addGenNotification: function(req, res, next) {

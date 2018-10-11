@@ -8,7 +8,7 @@ const path = require("path");
 const DeptSchema = require("../models/index");
 
 //Setting Uploading Configuration
-const upload = require("../config/multerConfig");
+const upload = require("../config/multer-config");
 
 var AdminStuff = {
   //Creating the Department

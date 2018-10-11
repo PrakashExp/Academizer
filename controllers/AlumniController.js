@@ -7,7 +7,7 @@ const path = require("path");
 const AlumniSchema = require("../models/index");
 
 //Setting Uploading Configuration
-const upload = require("../config/multerConfig");
+const upload = require("../config/multer-config");
 const transporter = require("../config/nodemailer.js");
 
 var alumniStuff = {
